@@ -5,7 +5,7 @@ import BarChart1 from './components/BarChart1';
 import BarChart2 from './components/BarChart2';
 import BarChart3 from './components/BarChart3';
 import PieChart1 from './components/PieChart1';
-import { Button, SimpleGrid, Paper, Text, Container } from '@mantine/core';
+import { Button, SimpleGrid, Paper, Text, Container, Center } from '@mantine/core';
 
 function App() {
   const [data1, setData1]= useState(data)
@@ -120,36 +120,34 @@ function App() {
     <main>
       <section>
       <Container size={1140} px={0}>
-        <SimpleGrid cols={3}>
+        <SimpleGrid cols={5}>
           <div>
           
-            <Paper shadow="md" radius="md" p="md">
-              <Text>1</Text>
+            <Paper shadow="md" radius="md" p="md" >
+              
+              <Text weight={700} size="xl">{totalPlant}</Text>
+              <Text color="dimmed">Total generation facility</Text>
+              
             </Paper>
             
           </div>
           <div>
             <Paper shadow="md" radius="md" p="md">
-              <Text>2</Text>
+              <Text weight={700} size="xl">{totalCapacity} MW</Text>
+              <Text color="dimmed">Total generation capacity</Text>
             </Paper>
           </div>
           <div>
             <Paper shadow="md" radius="md" p="md">
-              <Text>3</Text>
+              <Text weight={700} size="xl">{Math.round(totalRenCapacity)} MW</Text>
+              <Text color="dimmed">Total renewable capacity</Text>
             </Paper>
           </div>
+         
           
         </SimpleGrid>
         </Container>
-        <div>
-          <Button
-            onClick={() => {
-              console.log("nice");
-            }}
-          >
-            Hello worlds!
-          </Button>
-        </div>
+      
         
         <div>
         <Container size={1140} px={0}>

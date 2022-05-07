@@ -1,6 +1,7 @@
 import React from 'react'
 
 import {Bar} from 'react-chartjs-2'
+import zoomPlugin from 'chartjs-plugin-zoom';
 // import { Chart as ChartJS } from 'chart.js/auto'
 import {
     Chart as ChartJS,
@@ -18,7 +19,7 @@ import {
     BarElement,
     Title,
     Tooltip,
-    Legend
+    Legend, zoomPlugin
   );
 
 // defaults.global.tooltips.enabled = false;
@@ -43,12 +44,26 @@ const BarChart = ({data})=>{
         height={400}
         width={600}
         options={{
-            plugins:{
-            title: {
-                display: true,
-                text: 'my bar chart',
+            // indexAxis: 'y',
+            plugins: {
+                zoom: {
+                  zoom: {
+                    wheel: {
+                      enabled: true,
+                    },
+                    pinch: {
+                      enabled: true
+                    },
+                    mode: 'y',
+                  }
+                }
             },
-        },
+        //     plugins:{
+        //     title: {
+        //         display: true,
+        //         text: 'my bar chart',
+        //     },
+        // },
             maintainAspectRatio:false,
             scales: {
                 yAxes: 
@@ -69,6 +84,7 @@ const BarChart = ({data})=>{
                     }
         }}
         />
+        <button >Reset Zoom</button>
     </div>
 }
 
