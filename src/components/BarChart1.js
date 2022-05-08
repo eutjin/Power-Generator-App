@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {Bar} from 'react-chartjs-2'
-import zoomPlugin from 'chartjs-plugin-zoom';
+import zoomPlugin, { resetZoom } from 'chartjs-plugin-zoom';
 // import { Chart as ChartJS } from 'chart.js/auto'
 import {
     Chart as ChartJS,
@@ -26,8 +26,11 @@ import {
 
 const BarChart = ({data})=>{
 
-    
-    return <div>
+    const resetZoom1=()=>{
+       BarChart.resetZoom();
+    }
+
+    return <> <div>
         {/* {data.map((v)=><li>{v.label}</li>)} */}
         <Bar 
         data={{
@@ -84,8 +87,10 @@ const BarChart = ({data})=>{
                     }
         }}
         />
-        <button >Reset Zoom</button>
+        
     </div>
+    <button onClick={()=>{resetZoom1()}}>test</button>
+    </>
 }
 
 export default BarChart
