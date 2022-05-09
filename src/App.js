@@ -5,6 +5,9 @@ import BarChart1 from "./components/BarChart1";
 import BarChart2 from "./components/BarChart2";
 import BarChart3 from "./components/BarChart3";
 import PieChart1 from "./components/PieChart1";
+import LineChart1 from "./components/LineChart1";
+import Table1 from "./components/Table1";
+
 import {
   Button,
   SimpleGrid,
@@ -19,14 +22,19 @@ import {
   MediaQuery,
   Footer,
   Aside,
-  Navbar,
+  Navbar, Space, RingProgress
 } from "@mantine/core";
 
 function App() {
   const [data1, setData1] = useState(data);
-  // console.log(data1)
+  console.log(data1)
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+
+
+
+
+
 
   let fuel = data1.reduce((total, item) => {
     const { fuel, pcap } = item;
@@ -52,6 +60,7 @@ function App() {
     return b.capacity - a.capacity;
   }); //power plant generation capacity grouped by capacity
   console.log(mostFuelCap);
+  
 
   //largest generation facility for each fuel type
   let largestByFuel = data1.reduce((total, item, index) => {
@@ -115,6 +124,13 @@ function App() {
     return total;
   }, 0);
   console.log(totalRenCapacity);
+
+  const renPercent= Math.round((totalRenCapacity/totalCapacity)*100)
+  console.log(renPercent)
+
+  let mostFuelType= mostFuelCap[0] //highest generation capacity by single fuel type
+  console.log(mostFuelType)
+  let mostFuelTypePercent= Math.round((mostFuelType.capacity/totalCapacity)*100)
 
   let energySummary = mostFuelCap.map((v) => {
     return v.label;
@@ -183,7 +199,6 @@ function App() {
               <Text>Application navbar</Text>
             </Navbar>
           }
-         
           footer={
             <Footer height={60} p="md">
               Application footer
@@ -239,9 +254,50 @@ function App() {
                   <Text color="dimmed">Total renewable capacity</Text>
                 </Paper>
               </div>
+              <div>
+                <Paper shadow="md" radius="md" p="md">
+                  <RingProgress
+                    sections={[{ value: renPercent, color: "blue" }]}
+                    label={
+                      <Text color="blue" weight={700} align="center" size="xl">
+                        {renPercent}%
+                      </Text>
+                    }
+                  />
+                  <Text color="dimmed">Total renewable capacity</Text>
+                </Paper>
+              </div>
+              <div>
+                <Paper shadow="md" radius="md" p="md">
+                  <RingProgress
+                    sections={[{ value: mostFuelTypePercent, color: "orange" }]}
+                    label={
+                      <Text color="orange" weight={700} align="center" size="xl">
+                        {mostFuelType.label}
+                        <Space />
+                        {mostFuelTypePercent}%
+                      </Text>
+                    }
+                  />
+                  <Text color="dimmed">Highest capacity by Fuel type</Text>
+                </Paper>
+              </div>
             </SimpleGrid>
           </Container>
+          <Space h="md" />
 
+          <div>
+            <LineChart1 data={mostCompanyTop} />
+          </div>
+          <Space h="md" />             
+          <div>
+          <Container size={1140} px={0}>
+              <Paper shadow="md" radius="md" p="md">
+            <Table1 data={mostCompanyTop}/>
+            </Paper>
+            </Container>
+          </div>          
+          <Space h="md" />
           <div>
             <Container size={1140} px={0}>
               <Paper shadow="md" radius="md" p="md">
@@ -249,18 +305,20 @@ function App() {
               </Paper>
             </Container>
           </div>
+          <Space h="md" />
           <div>
-          <Container size={1140} px={0}>
+            <Container size={1140} px={0}>
               <Paper shadow="md" radius="md" p="md">
-            <BarChart2 data={mostFuel} />
-            </Paper>
+                <BarChart2 data={mostFuel} />
+              </Paper>
             </Container>
           </div>
+          <Space h="md" />
           <div>
-          <Container size={1140} px={0}>
+            <Container size={1140} px={0}>
               <Paper shadow="md" radius="md" p="md">
-            <BarChart3 data={mostCompanyTop} />
-            </Paper>
+                <BarChart3 data={mostCompanyTop} />
+              </Paper>
             </Container>
           </div>
           <div>
