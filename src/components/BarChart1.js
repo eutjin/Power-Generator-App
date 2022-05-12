@@ -27,7 +27,7 @@ import {
 const BarChart = ({data})=>{
 
     const resetZoom1=()=>{
-       BarChart.resetZoom();
+       Bar.resetZoom();
     }
 
     return <> <div>
@@ -89,7 +89,7 @@ const BarChart = ({data})=>{
         />
         
     </div>
-    <button onClick={()=>{resetZoom1()}}>test</button>
+    <button onClick={()=>resetZoom1()}>test</button>
     </>
 }
 

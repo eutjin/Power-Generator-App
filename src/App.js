@@ -6,9 +6,11 @@ import BarChart2 from "./components/BarChart2";
 import BarChart3 from "./components/BarChart3";
 import PieChart1 from "./components/PieChart1";
 import LineChart1 from "./components/LineChart1";
+import DoughnutChart1 from "./components/DoughnutChart1";
 import Table1 from "./components/Table1";
 
 import {
+  createStyles,
   Button,
   SimpleGrid,
   Paper,
@@ -22,6 +24,7 @@ import {
   MediaQuery,
   Footer,
   Aside,
+  Skeleton,
   Navbar, Space, RingProgress
 } from "@mantine/core";
 
@@ -31,7 +34,15 @@ function App() {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
 
-
+const useStyles= createStyles((theme)=>({
+  label:{
+    lineHeight:1,
+  },
+  item:{
+    height: 200,
+  },
+}))
+const { classes} = useStyles();
 
 
 
@@ -228,10 +239,11 @@ function App() {
             </Header>
           }
         >
-          <Container size={1140} px={0}>
-            <SimpleGrid cols={5}>
-              <div>
-                <Paper shadow="md" radius="md" p="md">
+          <Container size={1140} px={0} >
+            <SimpleGrid cols={5} >
+            
+              <div >
+                <Paper shadow="md" radius="md" p="md" className={classes.item}>
                   <Text weight={700} size="xl">
                     {totalPlant}
                   </Text>
@@ -239,7 +251,8 @@ function App() {
                 </Paper>
               </div>
               <div>
-                <Paper shadow="md" radius="md" p="md">
+
+                <Paper shadow="md"  radius="md" p="md" className={classes.item}>
                   <Text weight={700} size="xl">
                     {totalCapacity} MW
                   </Text>
@@ -247,7 +260,7 @@ function App() {
                 </Paper>
               </div>
               <div>
-                <Paper shadow="md" radius="md" p="md">
+                <Paper shadow="md" radius="md" p="md" className={classes.item}>
                   <Text weight={700} size="xl">
                     {Math.round(totalRenCapacity)} MW
                   </Text>
@@ -255,11 +268,11 @@ function App() {
                 </Paper>
               </div>
               <div>
-                <Paper shadow="md" radius="md" p="md">
+                <Paper shadow="md" radius="md" p="md" className={classes.item}>
                   <RingProgress
-                    sections={[{ value: renPercent, color: "blue" }]}
+                    sections={[{ value: renPercent, color: "#0f9583" }]}
                     label={
-                      <Text color="blue" weight={700} align="center" size="xl">
+                      <Text color="#0f9583" weight={700} align="center" size="xl">
                         {renPercent}%
                       </Text>
                     }
@@ -268,28 +281,40 @@ function App() {
                 </Paper>
               </div>
               <div>
-                <Paper shadow="md" radius="md" p="md">
+                <Paper shadow="md" radius="md" p="md" className={classes.item}>
                   <RingProgress
-                    sections={[{ value: mostFuelTypePercent, color: "orange" }]}
+                    sections={[{ value: mostFuelTypePercent, color: "#ff7070" }]}
                     label={
-                      <Text color="orange" weight={700} align="center" size="xl">
+                      <div>
+                      <Text color="#ff7070" weight={700} align="center" size="xl" className={classes.label}>
                         {mostFuelType.label}
-                        <Space />
+                        </Text>
+                        <Text color="#ff7070" weight={700} align="center" size="lg">
                         {mostFuelTypePercent}%
                       </Text>
+                      </div>
                     }
                   />
                   <Text color="dimmed">Highest capacity by Fuel type</Text>
                 </Paper>
               </div>
+              
             </SimpleGrid>
           </Container>
           <Space h="md" />
 
-          <div>
+          {/* <div>
             <LineChart1 data={mostCompanyTop} />
-          </div>
-          <Space h="md" />             
+          </div> */}
+          <Space h="md" />   
+          <div>
+          <Container size={1140} px={0}>
+              <Paper shadow="md" radius="md" p="md">
+            <DoughnutChart1 data={mostFuelCap} />
+            </Paper>
+            </Container>
+          </div>     
+          <Space h="md" />        
           <div>
           <Container size={1140} px={0}>
               <Paper shadow="md" radius="md" p="md">
@@ -324,6 +349,7 @@ function App() {
           <div>
             <PieChart1 data={mostCompanyTop} />
           </div>
+          
         </AppShell>
       </section>
     </main>
