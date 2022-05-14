@@ -1,5 +1,10 @@
-import React from 'react'
-
+import React, { useState, useContext, useReducer, useEffect } from "react";
+import {
+    createStyles, Group,
+    Button,
+    Tabs,
+    SegmentedControl
+  } from "@mantine/core"
 import {Bar} from 'react-chartjs-2'
 // import { Chart as ChartJS } from 'chart.js/auto'
 import {
@@ -21,41 +26,80 @@ import {
     Legend
   );
 
+  
+
 // defaults.global.tooltips.enabled = false;
 
 const BarChart = ({data})=>{
+    const [filter, setFilter]=useState(15)
+    const [sort, setSort]=useState("value")
 
     
+    const mostCompany = (Object.values(data).sort((a, b) => {
+      if(sort=="value"){
+  
+        return b.value - a.value;
+      }
+      else if (sort=="capacity"){
+        return b.capacity - a.capacity;
+      }
+    })).slice(0, filter);
+
+    // mostCompany=mostCompany.slice(0,filter)
+
     return <div>
         {/* {data.map((v)=><li>{v.label}</li>)} */}
+
+        {/* <div>
+        <Tabs>
+      <Tabs.Tab label="n=5" > {()=>console.log("hit")} </Tabs.Tab>
+      <Tabs.Tab label="n=10" onClick={()=>setFilter(10)}/>
+      <Tabs.Tab label="n=15" onClick={()=>setFilter(15)}/>
+      
+      <Tabs.Tab label="n=20" onClick={()=>setFilter(20)}/>
+      
+      
+    </Tabs>
+        </div> */}
+        <div>
         <Bar 
         data={{
-            labels: data.map((v)=>v.label),//
+            labels: mostCompany.map((v)=>v.label),//
             datasets: [{
                 label: 'number of plants',
-                data: data.map((v)=>v.value),//
+                data: mostCompany.map((v)=>v[sort]),//
+                barPercentage: 0.5,
                 backgroundColor: [
-                'black'
-              ],
-              
-            }]
+                    "#54bebe"
+              ],              
+            },
+            
+          
+          ]
         }}
-        height={400}
+        height={450}
         width={600}
         options={{
             plugins:{
             title: {
-                display: true,
+                display: false,
                 text: 'my bar chart',
             },
         },
             maintainAspectRatio:false,
             scales: {
+                x: {
+                    grid: {
+                      display: false,
+                    }
+                  },
+                 
+                  
                 yAxes: 
                     {
                         title: {
                             display: true,
-                            text: '(MW)',
+                            text: (sort==="value")? "Units":"MW",
                             align: 'center',
                             font: {
                                     size: 15
@@ -69,6 +113,27 @@ const BarChart = ({data})=>{
                     }
         }}
         />
+        </div>
+        <div>
+            <Group>
+            <Button  color="teal" variant="light" size="xs" onClick={()=>setFilter(5)}>N=5</Button>
+            <Button  color="teal" variant="light" size="xs" onClick={()=>setFilter(10)}>N=10</Button>
+            <Button  color="teal" variant="light" size="xs" onClick={()=>setFilter(15)}>N=15</Button>
+            <Button  color="teal" variant="light" size="xs" onClick={()=>setFilter(20)}>N=20</Button>
+            <Button  color="teal" variant="light" size="xs" onClick={()=>setFilter(25)}>N=25</Button>
+            </Group>
+        </div>
+        <div>
+        <SegmentedControl 
+      value={sort}
+      onChange={setSort}
+      data={[
+        { label: 'value', value: 'value' },
+        { label: 'capacity', value: 'capacity' },
+        
+      ]}
+    />
+        </div>
     </div>
 }
 

@@ -89,7 +89,7 @@ const BarChart = ({data})=>{
         />
         
     </div>
-    <button onClick={()=>resetZoom1()}>test</button>
+    <button onClick={()=> console.dir("nice")}>test</button>
     </>
 }
 

@@ -49,7 +49,7 @@ ChartJS.register(
 
 // defaults.global.tooltips.enabled = false;
 
-const LineChart = ({ data }) => {
+const LineChart = () => {
   const [data2, setData2] = useState([]);
   const [fuelType, setFuelType] = useState("");
   const [fuelType2, setFuelType2] = useState("");
@@ -62,12 +62,12 @@ const LineChart = ({ data }) => {
 
     const response = await fetch(url);
     const data = await response.json();
-    console.log(data);
-    console.log(data.response.body.items.item);
+    console.dir(data);
+    console.dir(data.response.body.items.item);
     setData2(data.response.body.items.item);
   };
 // if(date){
-//     console.log(date)
+//     console.dir(date)
 //   let month=date.getMonth();
 //   month=month+1; //get month starts from zero
 //   if (month<10){
@@ -81,15 +81,15 @@ const LineChart = ({ data }) => {
 
 //   let year= date.getFullYear();
 //   let newDate= `${year}${month}${day}`
-//   console.log(newDate)
+//   console.dir(newDate)
 //   setApiDate(newDate)
   
-//   console.log(apiDate)
+//   console.dir(apiDate)
 // }
 
 // setApiDate(20220404)
 const moddate=()=>{
-    console.log(date)
+    console.dir(date)
     let month=new Date(date).getMonth();//remember to use "new Date". huge bug caused when not in use previously
     
     month=month+1; //get month starts from zero
@@ -104,10 +104,10 @@ const moddate=()=>{
   
     let year= new Date(date).getFullYear();
     let newDate= `${year}${month}${day}`
-    console.log(newDate)
+    console.dir(newDate)
     setApiDate(newDate)
     
-    console.log(apiDate)
+    console.dir(apiDate)
 }
 
   useEffect(() => {
@@ -133,10 +133,10 @@ const moddate=()=>{
 
 //   let year= date.getFullYear();
 //   let newDate= `${year}${month}${day}`
-//   console.log(newDate)
+//   console.dir(newDate)
 //   setApiDate(newDate)
   
-//   console.log(apiDate)
+//   console.dir(apiDate)
 // }
 //   }
   // ok but not what i really wanted to do
@@ -146,19 +146,19 @@ const moddate=()=>{
 
     return total;
   }, {});
-  console.log(arrayz);
+  console.dir(arrayz);
 
   //transform data2, and then filter by fuel time to obtain time and value for line plot
   const array1 = data2
     .map((a) => ({ fuel: a.fuel, time: a.time, value: a.mgo }))
     .filter((type) => type.fuel == fuelType);
-  console.log(array1);
+  console.dir(array1);
 
   //anoter line for comparison with first data line
   const array2 = data2
     .map((a) => ({ fuel: a.fuel, time: a.time, value: a.mgo }))
     .filter((type) => type.fuel == fuelType2);
-  console.log(array2);
+  console.dir(array2);
 
   return (
     <div>
@@ -274,6 +274,7 @@ const moddate=()=>{
                     display: true,
                     // text: "my bar chart",
                   },
+                  
                 },
                 maintainAspectRatio: false,
               }}

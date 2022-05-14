@@ -8,8 +8,12 @@ import PieChart1 from "./components/PieChart1";
 import LineChart1 from "./components/LineChart1";
 import DoughnutChart1 from "./components/DoughnutChart1";
 import Table1 from "./components/Table1";
+import { BuildingFactory2, Plug, Leaf, InfoCircle } from "tabler-icons-react";
 
 import {
+  Tooltip,
+  Group,
+  Tabs,
   createStyles,
   Button,
   SimpleGrid,
@@ -25,31 +29,39 @@ import {
   Footer,
   Aside,
   Skeleton,
-  Navbar, Space, RingProgress
+  Navbar,
+  Space,
+  RingProgress,
 } from "@mantine/core";
 
 function App() {
   const [data1, setData1] = useState(data);
-  console.log(data1)
+  console.dir(data1);
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
 
-const useStyles= createStyles((theme)=>({
-  label:{
-    lineHeight:1,
-  },
-  item:{
-    height: 200,
-  },
-}))
-const { classes} = useStyles();
-
-
-
+  const useStyles = createStyles((theme) => ({
+    label: {
+      lineHeight: 1,
+    },
+    item: {
+      height: 200,
+    },
+    itemtext: {
+      fontSize: 25,
+      lineHeight: 1,
+    },
+    itemtext2: {
+      fontSize: 20,
+      lineHeight: 1,
+      bottom: 0,
+    },
+  }));
+  const { classes } = useStyles();
 
   let fuel = data1.reduce((total, item) => {
     const { fuel, pcap } = item;
-    // console.log(fuel)
+    // console.dir(fuel)
     if (!fuel) return total;
     if (!total[fuel]) {
       total[fuel] = { label: fuel, value: 1, capacity: pcap };
@@ -66,32 +78,31 @@ const { classes} = useStyles();
   const mostFuel = Object.values(fuel).sort((a, b) => {
     return b.value - a.value;
   }); //number of plants grouped by fuel type
-  console.log(mostFuel);
+  // console.dir(mostFuel);
   const mostFuelCap = Object.values(fuel).sort((a, b) => {
     return b.capacity - a.capacity;
   }); //power plant generation capacity grouped by capacity
-  console.log(mostFuelCap);
-  
+  console.dir(mostFuelCap);
 
   //largest generation facility for each fuel type
   let largestByFuel = data1.reduce((total, item, index) => {
     const { fuel, pcap } = item;
-    // console.log(fuel)
+    // console.dir(fuel)
     if (!fuel) return total;
     if (!total[fuel]) {
       total[fuel] = { label: fuel, capacity: pcap };
     } else if (pcap > total[fuel].capacity) {
       total[fuel] = { ...total[fuel], capacity: pcap };
-      console.log("yes");
+      console.dir("yes");
     }
 
     return total;
   }, {});
-  console.log(largestByFuel);
+  console.dir(largestByFuel);
 
   let genSource = data1.reduce((total, item) => {
     const { genSrc, pcap } = item;
-    // console.log(fuel)
+    // console.dir(fuel)
     if (!genSrc) return total;
     if (!total[genSrc]) {
       total[genSrc] = { label: genSrc, value: 1, capacity: pcap };
@@ -104,7 +115,7 @@ const { classes} = useStyles();
     }
     return total;
   }, {});
-  console.log(genSource);
+  console.dir(genSource);
 
   //total number of power plants in Korea
   let totalPlant = data1.length;
@@ -117,7 +128,7 @@ const { classes} = useStyles();
       return total;
     }, 0)
   );
-  console.log(totalCapacity);
+  console.dir(totalCapacity);
 
   //total capacity of renewable energy
   let totalRenCapacity = mostFuelCap.reduce((total, item) => {
@@ -134,46 +145,52 @@ const { classes} = useStyles();
     }
     return total;
   }, 0);
-  console.log(totalRenCapacity);
+  console.dir(totalRenCapacity);
 
-  const renPercent= Math.round((totalRenCapacity/totalCapacity)*100)
-  console.log(renPercent)
+  const renPercent = Math.round((totalRenCapacity / totalCapacity) * 100);
+  console.dir(renPercent);
 
-  let mostFuelType= mostFuelCap[0] //highest generation capacity by single fuel type
-  console.log(mostFuelType)
-  let mostFuelTypePercent= Math.round((mostFuelType.capacity/totalCapacity)*100)
+  let mostFuelType = mostFuelCap[0]; //highest generation capacity by single fuel type
+  console.dir(mostFuelType);
+  let mostFuelTypePercent = Math.round(
+    (mostFuelType.capacity / totalCapacity) * 100
+  );
 
   let energySummary = mostFuelCap.map((v) => {
     return v.label;
   });
-  console.log(energySummary);
+  console.dir(energySummary);
 
   //check number of companies
   let company = data1.reduce((total, item) => {
-    const { company } = item;
-    // console.log(fuel)
+    const { company, pcap } = item;
+    // console.dir(fuel)
 
     if (!company) return total;
     if (!total[company]) {
-      total[company] = { label: company, value: 1 };
+      total[company] = { label: company, value: 1, capacity: pcap };
     } else {
-      total[company] = { ...total[company], value: total[company].value + 1 };
+      total[company] = {
+        ...total[company],
+        value: total[company].value + 1,
+        capacity: total[company].capacity + pcap,
+      };
     }
 
     return total;
   }, {});
-  // console.log(company)
+  console.dir(company);
   const mostCompany = Object.values(company).sort((a, b) => {
     return b.value - a.value;
   });
-  console.log(mostCompany); //number of plants owned by each company
+  console.dir(mostCompany); //number of plants owned by each company
   const mostCompanyTop = mostCompany.slice(0, 25);
-  console.log(mostCompanyTop);
+  console.dir(mostCompanyTop);
 
   //area: not needed as it divides into ony 3 types (urban, non-urban, Jeju)
   let area = data1.reduce((total, item) => {
     const { area } = item;
-    // console.log(fuel)
+    // console.dir(fuel)
     if (!area) return total;
     if (!total[area]) {
       total[area] = { label: area, value: 1 };
@@ -182,7 +199,7 @@ const { classes} = useStyles();
     }
     return total;
   }, {});
-  console.log(area);
+  console.dir(area);
 
   return (
     <main>
@@ -239,31 +256,59 @@ const { classes} = useStyles();
             </Header>
           }
         >
-          <Container size={1140} px={0} >
-            <SimpleGrid cols={5} >
-            
-              <div >
+          <Container size={1140} px={0}>
+            <SimpleGrid cols={5}>
+              <div>
                 <Paper shadow="md" radius="md" p="md" className={classes.item}>
-                  <Text weight={700} size="xl">
+                  <Group position="apart">
+                    <BuildingFactory2 size={40} />
+                    <Tooltip
+                      wrapLines
+                      width={150}
+                      withArrow
+                      transition="fade"
+                      transitionDuration={120}
+                      label="The total number of power generation facilities within South Korea"
+                    >
+                      <InfoCircle size={20} />
+                    </Tooltip>
+                  </Group>
+
+                  <Space h="lg" />
+                  <Text weight={600} className={classes.itemtext}>
                     {totalPlant}
                   </Text>
                   <Text color="dimmed">Total generation facility</Text>
                 </Paper>
               </div>
               <div>
-
-                <Paper shadow="md"  radius="md" p="md" className={classes.item}>
-                  <Text weight={700} size="xl">
-                    {totalCapacity} MW
-                  </Text>
+                <Paper shadow="md" radius="md" p="md" className={classes.item}>
+                  <Plug size={40} />
+                  
+                  <Space h="lg" />
+                  <Group spacing={5}>
+                    <Text weight={600} className={classes.itemtext}>
+                      {totalCapacity}
+                    </Text>
+                    <Text weight={600} className={classes.itemtext2}>
+                      MW
+                    </Text>
+                  </Group>
                   <Text color="dimmed">Total generation capacity</Text>
                 </Paper>
               </div>
               <div>
                 <Paper shadow="md" radius="md" p="md" className={classes.item}>
-                  <Text weight={700} size="xl">
-                    {Math.round(totalRenCapacity)} MW
-                  </Text>
+                  <Leaf size={40} />
+                  <Space h="lg" />
+                  <Group spacing={5}>
+                    <Text weight={600} className={classes.itemtext}>
+                      {Math.round(totalRenCapacity)}
+                    </Text>
+                    <Text weight={600} className={classes.itemtext2}>
+                      MW
+                    </Text>
+                  </Group>
                   <Text color="dimmed">Total renewable capacity</Text>
                 </Paper>
               </div>
@@ -272,7 +317,12 @@ const { classes} = useStyles();
                   <RingProgress
                     sections={[{ value: renPercent, color: "#0f9583" }]}
                     label={
-                      <Text color="#0f9583" weight={700} align="center" size="xl">
+                      <Text
+                        color="#0f9583"
+                        weight={700}
+                        align="center"
+                        size="xl"
+                      >
                         {renPercent}%
                       </Text>
                     }
@@ -283,45 +333,75 @@ const { classes} = useStyles();
               <div>
                 <Paper shadow="md" radius="md" p="md" className={classes.item}>
                   <RingProgress
-                    sections={[{ value: mostFuelTypePercent, color: "#ff7070" }]}
+                    sections={[
+                      { value: mostFuelTypePercent, color: "#ff7070" },
+                    ]}
                     label={
                       <div>
-                      <Text color="#ff7070" weight={700} align="center" size="xl" className={classes.label}>
-                        {mostFuelType.label}
+                        <Text
+                          color="#ff7070"
+                          weight={700}
+                          align="center"
+                          size="xl"
+                          className={classes.label}
+                        >
+                          {mostFuelType.label}
                         </Text>
-                        <Text color="#ff7070" weight={700} align="center" size="lg">
-                        {mostFuelTypePercent}%
-                      </Text>
+                        <Text
+                          color="#ff7070"
+                          weight={700}
+                          align="center"
+                          size="lg"
+                        >
+                          {mostFuelTypePercent}%
+                        </Text>
                       </div>
                     }
                   />
                   <Text color="dimmed">Highest capacity by Fuel type</Text>
                 </Paper>
               </div>
-              
             </SimpleGrid>
           </Container>
           <Space h="md" />
 
-          {/* <div>
-            <LineChart1 data={mostCompanyTop} />
-          </div> */}
-          <Space h="md" />   
           <div>
-          <Container size={1140} px={0}>
-              <Paper shadow="md" radius="md" p="md">
-            <DoughnutChart1 data={mostFuelCap} />
-            </Paper>
-            </Container>
-          </div>     
-          <Space h="md" />        
+            <LineChart1 />
+          </div>
+          <Space h="md" />
+
           <div>
-          <Container size={1140} px={0}>
+            <Container size={1140} px={0}>
               <Paper shadow="md" radius="md" p="md">
-            <Table1 data={mostCompanyTop}/>
-            </Paper>
+                <Tabs>
+                  <Tabs.Tab label="Table">
+                    <Table1 data={company} />
+                  </Tabs.Tab>
+                  <Tabs.Tab label="Chart">
+                    <BarChart3 data={company} />
+                  </Tabs.Tab>
+                </Tabs>
+              </Paper>
             </Container>
-          </div>          
+          </div>
+
+          {/* real */}
+          <Space h="md" />
+          <div>
+            <Container size={1140} px={0}>
+              <Paper shadow="md" radius="md" p="md">
+                <DoughnutChart1 data={mostFuelCap} />
+              </Paper>
+            </Container>
+          </div>
+          <Space h="md" />
+          <div>
+            <Container size={1140} px={0}>
+              <Paper shadow="md" radius="md" p="md">
+                <Table1 data={company} />
+              </Paper>
+            </Container>
+          </div>
           <Space h="md" />
           <div>
             <Container size={1140} px={0}>
@@ -342,14 +422,13 @@ const { classes} = useStyles();
           <div>
             <Container size={1140} px={0}>
               <Paper shadow="md" radius="md" p="md">
-                <BarChart3 data={mostCompanyTop} />
+                <BarChart3 data={company} />
               </Paper>
             </Container>
           </div>
           <div>
             <PieChart1 data={mostCompanyTop} />
           </div>
-          
         </AppShell>
       </section>
     </main>

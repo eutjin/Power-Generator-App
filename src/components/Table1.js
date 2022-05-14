@@ -1,13 +1,57 @@
-import { Table, ScrollArea } from '@mantine/core';
+import React, { useState, useContext, useReducer, useEffect } from "react";
+
+import { Table, ScrollArea, createStyles, useMantineTheme,} from '@mantine/core';
 
 function Table1({data}) {
+  const [sort, setSort]=useState("capacity")
+  const theme = useMantineTheme();
+  
 
+const useStyles= createStyles((theme)=>({
+  sort:{
+    '&:hover': {
+    backgroundColor: theme.colors.gray[3],
+    
+  },
+  width: '20%',
+ 
+},
+header:{
+  position: 'sticky',
+  backgroundColor: theme.white,
+  top: 0,
+  boxShadow: theme.shadows.sm,
+},
+ 
+
+}))
+const { classes} = useStyles();
+
+
+
+  const mostCompany = (Object.values(data).sort((a, b) => {
+    if(sort=="value"){
+
+      return b.value - a.value;
+    }
+    else if (sort=="capacity"){
+      return b.capacity - a.capacity;
+    }
+  })).slice(0, 25);
+  console.dir(mostCompany); //number of plants owned by each company
+
+
+
+  const mostCompanyTop = mostCompany.slice(0, 25);
+  console.dir(mostCompanyTop);
    
 
-  const rows = data.map((element) => (
+  const rows = mostCompany.map((element, index) => (
     <tr key={element.label}>
+      <td>{index+1}</td>
       <td>{element.label}</td>
       <td>{element.value}</td>
+      <td>{Math.round(element.capacity)}</td>
     
     </tr>
   ));
@@ -16,11 +60,13 @@ function Table1({data}) {
     
     
     <Table highlightOnHover>
-        <ScrollArea sx={{ height: 300 }} >
-      <thead>
+        <ScrollArea sx={{ height: 450 }} >
+      <thead className={classes.header}>
         <tr>
+          <th>Number</th>
           <th>Company Name</th>
-          <th>Number of plants</th>
+          <th onClick={()=>setSort("value")} className={classes.sort}>Number of plants</th>
+          <th onClick={()=>setSort("capacity")} className={classes.sort}>Capacity</th>
           
         </tr>
       </thead>

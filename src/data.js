@@ -1,4 +1,4 @@
-export default[
+const mydata=[
     {
     area: "수도권",
     genFom: "기력",
@@ -102617,6 +102617,9 @@ export default[
     pcap: 0,
     company: "주식회사 무안햇빛발전소",
     rn: 9329
-    },
-    ]
+    }
+    ];
+
+    export default mydata;
+
    
