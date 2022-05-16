@@ -2,6 +2,10 @@ import React, { useState, useContext, useReducer, useEffect } from "react";
 import { DatePicker } from '@mantine/dates';
 import { Calendar } from 'tabler-icons-react';
 import {
+  Card,
+  createStyles,
+  Divider,
+  Title as Title1,
   Button,
   SimpleGrid,
   Paper,
@@ -55,6 +59,15 @@ const LineChart = () => {
   const [fuelType2, setFuelType2] = useState("");
   const [date, setDate]= useState("")
   const [apiDate, setApiDate]= useState(20220401)
+  const theme = useMantineTheme();
+
+  const useStyles = createStyles((theme) => ({
+    title: {
+      
+    },
+    
+  }));
+  const { classes } = useStyles();
 
   const fetchData = async () => {
     let url =
@@ -66,6 +79,7 @@ const LineChart = () => {
     console.dir(data.response.body.items.item);
     setData2(data.response.body.items.item);
   };
+  console.dir(data2)
 // if(date){
 //     console.dir(date)
 //   let month=date.getMonth();
@@ -164,8 +178,13 @@ const moddate=()=>{
     <div>
       {/* {data.map((v)=><li>{v.label}</li>)} */}
       <Container size={1140} px={0}>
-        <Paper shadow="md" radius="md" p="md">
-        <SimpleGrid cols={5}>
+      <Card radius="md" shadow="md">
+                <Card.Section className={classes.title} shadow="md" >
+                  <Title1 order={4} px={15} py={15} >Daily Electricity Trade</Title1>
+                  <Divider size="xs" />
+                </Card.Section>
+                 
+        <SimpleGrid cols={5} mt="md">
           <div>
             <DatePicker
               label="Date"
@@ -261,8 +280,8 @@ const moddate=()=>{
                   {
                     label: fuelType2,
                     data: array2.map((v) => v.value), //
-                    borderColor: "#e4bcad",
-                    backgroundColor: "#e4bcad",
+                    borderColor: "#ff7070",
+                    backgroundColor: "#ff7070",
                   },
                 ],
               }}
@@ -277,10 +296,54 @@ const moddate=()=>{
                   
                 },
                 maintainAspectRatio: false,
+                scales: {
+                  x: {
+                    display: true,
+                    title:{
+                      display: true,
+                      text: 'Hours',
+                      font: {
+                              family: 'Arial',
+                              size: 18,
+                              style: 'normal',
+                              //  weight: 'bold',
+                             },
+                    }
+                  },
+                  y: {
+                    
+                    title:{
+                      display: true,
+                      text: 'MWh',
+                      font: {
+                        family: 'Arial',
+                        size: 18,
+                        style: 'normal',
+                        //  weight: 'bold',
+                       },
+                    }
+                  },
+    
+                 
+                  // xAxes: {
+                  //   title: {
+                  //     display: true,
+                  //     text: "Hours",
+                  //     align: "center",
+                  //     font: {
+                  //       family: 'Arial',
+                  //       size: 18,
+                  //       style: 'normal',
+                  //       // weight: 'bold',
+                  //     },
+                  //   },
+                   
+                  // },
+                },
               }}
             />
           </div>
-        </Paper>
+        </Card>
       </Container>
     </div>
   );

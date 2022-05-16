@@ -11,6 +11,10 @@ import Table1 from "./components/Table1";
 import { BuildingFactory2, Plug, Leaf, InfoCircle } from "tabler-icons-react";
 
 import {
+  SegmentedControl,
+  Title as Title1,
+  Divider,
+  Card,
   Tooltip,
   Group,
   Tabs,
@@ -33,12 +37,14 @@ import {
   Space,
   RingProgress,
 } from "@mantine/core";
+import { Title } from "chart.js";
 
 function App() {
   const [data1, setData1] = useState(data);
   console.dir(data1);
-  const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const [type, setType]= useState("graph")
+  const theme = useMantineTheme();
 
   const useStyles = createStyles((theme) => ({
     label: {
@@ -56,6 +62,9 @@ function App() {
       lineHeight: 1,
       bottom: 0,
     },
+    title:{
+      
+    }
   }));
   const { classes } = useStyles();
 
@@ -129,6 +138,33 @@ function App() {
     }, 0)
   );
   console.dir(totalCapacity);
+
+  // //total capacity of renewable energy (filter does not work)
+  // let totalRenCapacity = mostFuelCap.filter(item => (item.label=="태양광"||"원자력" ||"부생가스" ||"수력" ||"풍력" ||"바이오매스" ||"해양에너지")).reduce((total, item) => {
+    
+  //     total += item.capacity;
+    
+  //   return total;
+  // }, 0);
+  // console.dir(totalRenCapacity);
+  // console.log(mostFuelCap.filter((item) =>{return item.label===("태양광"||"원자력"||"부생가스"||"수력"||"풍력"||"바이오매스"||"해양에너지")}))
+
+    let renewableCapacity= mostFuelCap.filter((item)=>{
+
+      if (
+        item.label === "태양광" ||
+        item.label === "원자력" ||
+        item.label === "부생가스" ||
+        item.label === "수력" ||
+        item.label === "풍력" ||
+        item.label === "바이오매스" ||
+        item.label === "해양에너지"
+      ) {
+        return item
+      }
+
+    })
+    console.dir(renewableCapacity)
 
   //total capacity of renewable energy
   let totalRenCapacity = mostFuelCap.reduce((total, item) => {
@@ -284,7 +320,7 @@ function App() {
               <div>
                 <Paper shadow="md" radius="md" p="md" className={classes.item}>
                   <Plug size={40} />
-                  
+
                   <Space h="lg" />
                   <Group spacing={5}>
                     <Text weight={600} className={classes.itemtext}>
@@ -365,23 +401,43 @@ function App() {
           </Container>
           <Space h="md" />
 
+          {/*components start here  */}
           <div>
             <LineChart1 />
           </div>
+
           <Space h="md" />
 
           <div>
             <Container size={1140} px={0}>
-              <Paper shadow="md" radius="md" p="md">
-                <Tabs>
+              <Card radius="md" shadow="md">
+                
+                <Card.Section className={classes.title} shadow="md">
+                <Group position="apart">
+                  <Title1 order={4} px={15} py={15}>
+                    Power corporations
+                  </Title1>
+                  <SegmentedControl mx={15} color='green'
+                    value={type}
+                    onChange={setType}
+                    data={[
+                      { label: "Graph", value: "graph" },
+                      { label: "Table", value: "table" },
+                    ]}
+                  />
+                  </Group>
+                  <Divider size="xs" />
+                </Card.Section>
+                {type=="graph"? <BarChart3 data={company} />:<Table1 data={company} />}
+                {/* <Tabs>
                   <Tabs.Tab label="Table">
                     <Table1 data={company} />
                   </Tabs.Tab>
                   <Tabs.Tab label="Chart">
                     <BarChart3 data={company} />
                   </Tabs.Tab>
-                </Tabs>
-              </Paper>
+                </Tabs> */}
+              </Card>
             </Container>
           </div>
 
@@ -389,12 +445,32 @@ function App() {
           <Space h="md" />
           <div>
             <Container size={1140} px={0}>
+            <Card radius="md" shadow="md">
+                
+                <Card.Section className={classes.title} shadow="md">
+                
+                  <Title1 order={4} px={15} py={15}>
+                    Fuel type composition
+                  </Title1>
+                  <Divider size="xs" />
+                  </Card.Section>
+                  <Space h="md" />
+                  
+                <DoughnutChart1 data={mostFuelCap} totalCapacity={totalCapacity} />
+              </Card>
+            </Container>
+          </div>
+          <Space h="md" />
+
+          <div>
+            <Container size={1140} px={0}>
               <Paper shadow="md" radius="md" p="md">
-                <DoughnutChart1 data={mostFuelCap} />
+                <DoughnutChart1 data={renewableCapacity} />
               </Paper>
             </Container>
           </div>
           <Space h="md" />
+
           <div>
             <Container size={1140} px={0}>
               <Paper shadow="md" radius="md" p="md">
@@ -421,14 +497,20 @@ function App() {
           <Space h="md" />
           <div>
             <Container size={1140} px={0}>
-              <Paper shadow="md" radius="md" p="md">
+              <Card radius="md" shadow="md">
+                <Card.Section className={classes.title} shadow="md">
+                  <Title1 order={3} px={15} py={15}>
+                    yesss
+                  </Title1>
+                  {/* <Divider size="xs" /> */}
+                </Card.Section>
                 <BarChart3 data={company} />
-              </Paper>
+              </Card>
             </Container>
           </div>
-          <div>
+          {/* <div>
             <PieChart1 data={mostCompanyTop} />
-          </div>
+          </div> */}
         </AppShell>
       </section>
     </main>
