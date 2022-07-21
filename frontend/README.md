@@ -78,3 +78,5 @@ total capacity for each company
 2. total power consumption for each state
 3. solve no cors for line chart 1
 4. responsive page
+5. energy price switch selector
+6. table view for city consumption

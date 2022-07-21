@@ -6,7 +6,7 @@ import axios from "axios";
 // import styles from "./Consumption.module.css";
 
 import {
-  Card,
+  Card, Table, ScrollArea, SegmentedControl,
   createStyles,
   Divider,
   Title as Title1,
@@ -63,6 +63,7 @@ const Consumption= ({data}) => {
   const [metroNm, setMetroNm]= useState({})
   const [metroAllCity, setMetroAllCity]= useState([])
   const [metro, setMetro]= useState("")
+  const [type, setType]= useState("map")
   const [metroHseCnt, setMetroHseCnt]= useState("")
   const [metroCityCnt, setMetroCityCnt]= useState("")
   const [metroPwrUse, setMetroPwrUse]= useState("")
@@ -130,7 +131,14 @@ const Consumption= ({data}) => {
               fill: "#0f9583",
               transition: "300ms Ease",
           }
-         }
+         },
+         header:{
+          position: 'sticky',
+          backgroundColor: theme.white,
+          top: 10,
+          boxShadow: theme.shadows.sm,
+        },
+        
       }));
       const { classes } = useStyles();
   
@@ -209,7 +217,10 @@ console.log("joke",metroCons)
 useEffect(()=>{
   const modMetroCons= metroCons.map((item)=>({...item, powerUsage: item.ttlPower/item.houseCnt}))
   console.log("joke2", modMetroCons)
-  setMetroPower(modMetroCons)//7
+  const desModMetroCons= Object.values(modMetroCons).sort((a,b)=>{
+    return b.powerUsage - a.powerUsage;
+  })
+  setMetroPower(desModMetroCons)//7
 }, [metroCons])
 
 useEffect(()=>{
@@ -278,6 +289,16 @@ const metroPro=(metroNm)=>{
    console.table(metroAllCity)
   }
 
+  const rows = metroPower.map((element, index) => (
+    <tr key={element.metro} onClick={(e) => handelModal(element.metro)}>
+      <td>{index+1}</td>
+      <td>{element.metro}</td>
+      
+      <td>{Math.round(element.powerUsage)}</td>
+    
+    </tr>
+  ));
+
   // useEffect(()=>{
   //   if(consModal){
   //     const metro= metroPower.find((item)=>(item.metro==metroNm.metro))
@@ -339,6 +360,16 @@ const inputs=(<>
           ]
     }
   />
+  <SegmentedControl className={classes.segment}
+                      mx={15} mt={28}
+                      color="teal"
+                      value={type}
+                      onChange={setType}
+                      data={[
+                        { label: "Map", value: "map" },
+                        { label: "Table", value: "table" },
+                      ]}
+                    />
 </Group></>
 )
 
@@ -348,7 +379,7 @@ const inputs=(<>
         <Card radius="md" shadow="md">
           <Card.Section className={classes.title} shadow="md">
             <Title1 order={4} px={15} py={15}>
-              Daily Electricity Trade
+              Daily Average Energy Use
             </Title1>
             <Divider size="xs" />
           </Card.Section>
@@ -423,7 +454,9 @@ Consumption.js:192 convertion 인천광역시
 Consumption.js:192 convertion 제주특별자치도
 Consumption.js:192 convertion 전라북도
 Consumption.js:192 convertion 경기도 */}
-          <div className={classes.container}>
+
+{type=="map"?(
+  <div className={classes.container}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 600 500"
@@ -611,6 +644,27 @@ Consumption.js:192 convertion 경기도 */}
               </button>
             ))}
           </div>
+):(
+<div>
+          <Table highlightOnHover>
+        
+      <thead className={classes.header}>
+        <tr>
+          <th>Number</th>
+          <th>Metro</th>
+          <th>Energy use</th>
+          
+          
+        </tr>
+      </thead>
+      
+      <tbody>{rows}</tbody>
+      
+    </Table>
+          </div>
+)}
+          
+          
         </Card>
       </Container>
     </>

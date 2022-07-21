@@ -548,7 +548,7 @@ function App() {
           <Consumption data={metroData}/>
            
           </div>
-
+          <Space h="md" />
           <div>
             <LineChart1 />
           </div>
@@ -564,6 +564,7 @@ function App() {
                       Power corporations
                     </Title1>
                     <SegmentedControl
+                     
                       mx={15}
                       color="green"
                       value={type}
