@@ -14,7 +14,7 @@ import {
     Legend,
     ArcElement,
   } from 'chart.js';
-import { SimpleGrid, UnstyledButton, Text, Card, Container, RingProgress, Center, Divider, createStyles, useMantineTheme, Group} from '@mantine/core';
+import { Tooltip as Tooltip1, SimpleGrid, UnstyledButton, Text, Card, Container, RingProgress, Center, Divider, createStyles, useMantineTheme, Group} from '@mantine/core';
 
   ChartJS.register(
     CategoryScale,
@@ -36,9 +36,26 @@ const DoughnutChart = ({data, totalCapacity})=>{
     // }
     const theme = useMantineTheme();
 const useStyles = createStyles((theme) => ({
+  cardcontent1:{
+    // fontWeight: 500,
+    lineHeight: 1,
+    width: '60px',
+  overflow: 'hidden',
+  whiteSpace: 'nowrap',
+  textOverflow: 'ellipsis',
+    
+  },
   cardcontent:{
     // fontWeight: 500,
     lineHeight: 1,
+  
+  },
+  cardcontent2:{
+    // fontWeight: 500,
+    lineHeight: 1,
+    fontWeight: 700,
+    fontSize: 28,
+  
   },
   cardmain:{
     fontWeight:700,
@@ -98,23 +115,41 @@ const { classes } = useStyles();
     </div>
     <div>
 
-      <SimpleGrid cols={4} mt="md">
+      <SimpleGrid cols={5} mt="md">
         
         {data.map((v, index)=>((Math.round(v.capacity)>0)?
           
          
 
         (
-          <Card withBorder radius="md" p='xs' key={v.label} >
+          <Card  withBorder radius="md" p='xs' key={v.label} >
            {/* <UnstyledButton key={v.label} > */}
-          
+          <Center>
            <div>
            
-
+            <Group>
+              <div>
            <Text size="xs" color="dimmed" >Fuel Type</Text>
-           <Text align="left" size="md" className={classes.cardcontent} >
+           <Tooltip1
+                      wrapLines
+                      // width={150}
+                      withArrow
+                      transition="fade"
+                      transitionDuration={120}
+                      label= {v.label}
+                    >
+           <Text align="left" size="md" className={classes.cardcontent1} >
              {v.label} 
            </Text>
+           </Tooltip1>
+           </div>
+           <div>
+           {/* <Text size="xs" color="dimmed" >Percentage</Text> */}
+           <Group spacing="xs">
+           <Text  align="center"  color="blue"  className={classes.cardcontent2} >
+            {((v.capacity/totalCapacity)*100).toFixed(2)} 
+           </Text><Text color="blue" mx={0}>%</Text></Group>
+           </div></Group>
           <Group spacing={28}>
             
           <div>
@@ -126,24 +161,19 @@ const { classes } = useStyles();
            <div>
            <Text size="xs" color="dimmed" mt={7}>Capacity (MW)</Text>
            <Text align="left" size="md"  className={classes.cardcontent} >
-           {Math.round(v.capacity)} 
+           {(Math.round(v.capacity)).toLocaleString()} 
            </Text>
            
            
            </div>
-           <div>
-           <Text size="xs" color="dimmed" mt={7}>Percentage</Text>
-           <Text size="lg" align="center" className={classes.cardcontent} >
-            {((v.capacity/totalCapacity)*100).toFixed(2)} %
-           </Text>
-           </div>
+           
            </Group>
           </div>      
         
            
            
                   
-           
+          </Center>
          {/* </UnstyledButton> */}
          </Card>):null
         )

@@ -1,6 +1,8 @@
 import React, { useState, useContext, useReducer, useEffect } from "react";
 import { DatePicker } from '@mantine/dates';
 import { Calendar } from 'tabler-icons-react';
+import axios from "axios";
+
 import {
   Card,
   createStyles,
@@ -55,10 +57,10 @@ ChartJS.register(
 
 const LineChart = () => {
   const [data2, setData2] = useState([]);
-  const [fuelType, setFuelType] = useState("");
+  const [fuelType, setFuelType] = useState("IGCC");
   const [fuelType2, setFuelType2] = useState("");
-  const [date, setDate]= useState("")
-  const [apiDate, setApiDate]= useState(20220401)
+  const [date, setDate]= useState(new Date(2022, 5, 30))
+  const [apiDate, setApiDate]= useState(20220630)
   const theme = useMantineTheme();
 
   const useStyles = createStyles((theme) => ({
@@ -69,17 +71,39 @@ const LineChart = () => {
   }));
   const { classes } = useStyles();
 
-  const fetchData = async () => {
-    let url =
-      `https://apis.data.go.kr/B552115/PowerTradingResultInfo/getPowerTradingResultInfo?serviceKey=hcXb%2FHslI8a0xCxDPh%2BU9zrCMXTX%2BefXDcOnSoVibf0Cz24SwSoFHAT7W2QgtXl9Cb8VrLV2Vxsgtbmm7zU2Gw%3D%3D&pageNo=1&numOfRows=600&dataType=JSON&tradeDay=${apiDate}`;
+  //test
+  useEffect(()=>{
+fetchData();
+    
+  }, [])
 
-    const response = await fetch(url);
-    const data = await response.json();
-    console.dir(data);
-    console.dir(data.response.body.items.item);
-    setData2(data.response.body.items.item);
-  };
-  console.dir(data2)
+  // const fetchData = async () => {
+  //   let url =
+  //     `https://apis.data.go.kr/B552115/PowerTradingResultInfo/getPowerTradingResultInfo?serviceKey=hcXb%2FHslI8a0xCxDPh%2BU9zrCMXTX%2BefXDcOnSoVibf0Cz24SwSoFHAT7W2QgtXl9Cb8VrLV2Vxsgtbmm7zU2Gw%3D%3D&pageNo=1&numOfRows=600&dataType=JSON&tradeDay=${apiDate}`;
+
+  //   const response = await fetch(url);
+  //   const data = await response.json();
+  //   console.dir(data);
+  //   console.dir(data.response.body.items.item);
+  //   setData2(data.response.body.items.item);
+  // };
+  // console.dir(data2)
+
+const fetchData= ()=>{
+  const variable={apiDate: apiDate};
+
+  axios.post("http://localhost:5000/api/daily/powerTrading/", variable).then(response=>{
+
+  console.log("response",response)
+    if(response.data.success){
+      console.log("chart", response.data.data.response.body.items.item)
+      setData2(response.data.data.response.body.items.item)
+    }else{
+      alert("get failed")
+    }
+  })
+}
+
 // if(date){
 //     console.dir(date)
 //   let month=date.getMonth();
@@ -103,7 +127,7 @@ const LineChart = () => {
 
 // setApiDate(20220404)
 const moddate=()=>{
-    console.dir(date)
+    console.log("mantine",date)
     let month=new Date(date).getMonth();//remember to use "new Date". huge bug caused when not in use previously
     
     month=month+1; //get month starts from zero
@@ -117,6 +141,7 @@ const moddate=()=>{
           
   
     let year= new Date(date).getFullYear();
+    console.log("yearr", year)
     let newDate= `${year}${month}${day}`
     console.dir(newDate)
     setApiDate(newDate)
@@ -192,7 +217,7 @@ const moddate=()=>{
               value={date}
               onChange={setDate}
               icon={<Calendar size={16} />}
-              excludeDate={(date) => date.getMonth() ==4}
+              excludeDate={(date) => date.getFullYear()==2022 && date.getMonth() >5}
             />
           </div>
 

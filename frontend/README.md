@@ -73,3 +73,8 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 renewable percentage by each type
 price increase per unnit fuel with trend graph
 total capacity for each company
+
+1. average power consumption for each state
+2. total power consumption for each state
+3. solve no cors for line chart 1
+4. responsive page
