@@ -6,13 +6,13 @@ router.post('/average', async (req, res)=>{
     console.log("check2",req.body)
     let allMetro= req.body.metro
     // console.log("allMetro", allMetro)
-
+const api_key= process.env.API_KEY_2;
     let array=[]
     await Promise.all(allMetro.map(async (item)=>{
        
         
        const response=await fetch(
-        `https://bigdata.kepco.co.kr/openapi/v1/powerUsage/houseAve.do?year=${req.body.year}&month=${req.body.month}&metroCd=${item.code}&apiKey=Q12Rg5406HgHHO60H1403SfGd36mp02VQ7FnTGxK&returnType=json`)
+        `https://bigdata.kepco.co.kr/openapi/v1/powerUsage/houseAve.do?year=${req.body.year}&month=${req.body.month}&metroCd=${item.code}&apiKey=${api_key}&returnType=json`)
        
         const data= await response.json()
 

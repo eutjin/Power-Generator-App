@@ -167,7 +167,7 @@ const BarChart = ({ data }) => {
         </Group> */}
       </div>
       <div className={classes.button}>
-        <Title1 order={4} mx="sm">Data size:</Title1>
+        <Title1 order={5} mx="xs">Data size:</Title1>
       <SegmentedControl
           value={filter}
           onChange={setFilter}
@@ -180,7 +180,7 @@ const BarChart = ({ data }) => {
           ]}
         />
         <Space w="xl" />
-         <Title1 order={4} mx="sm">Data Type:</Title1>
+         <Title1 order={5} mx="xs">Data Type:</Title1>
         <SegmentedControl
           value={sort}
           onChange={setSort}
