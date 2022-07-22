@@ -186,7 +186,7 @@ const fetchData=()=>{
     }
     console.log("var",variable)
 
-    axios.post("http://localhost:5000/api/consumption/average/", variable).then(response=>{
+    axios.post("http://clownfish-app-6fhry.ondigitalocean.app/api/consumption/average/", variable).then(response=>{
       if(response.data.success){
         console.log("average", response.data.array)
         setConsData(response.data.array)
