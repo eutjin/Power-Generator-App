@@ -3,6 +3,7 @@ import { DatePicker } from '@mantine/dates';
 import { Calendar } from 'tabler-icons-react';
 import CityChart from "./CityChart";
 import axios from "axios";
+import baseUrl from "../BaseUrl";
 // import styles from "./Consumption.module.css";
 
 import {
@@ -185,8 +186,9 @@ const fetchData=()=>{
         metro: data,
     }
     console.log("var",variable)
+    console.log("base", baseUrl)
 
-    axios.post("https://clownfish-app-6fhry.ondigitalocean.app/api/consumption/average/", variable).then(response=>{
+    axios.post(baseUrl+"/api/consumption/average/", variable).then(response=>{
       if(response.data.success){
         console.log("average", response.data.array)
         setConsData(response.data.array)

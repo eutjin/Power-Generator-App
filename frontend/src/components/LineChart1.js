@@ -3,6 +3,7 @@ import { DatePicker } from '@mantine/dates';
 import { Calendar } from 'tabler-icons-react';
 import axios from "axios";
 
+
 import {
   Card,
   createStyles,
@@ -41,6 +42,7 @@ import {
   LineElement,
   PointElement,
 } from "chart.js";
+import baseUrl from "../BaseUrl";
 
 ChartJS.register(
   CategoryScale,
@@ -92,7 +94,7 @@ fetchData();
 const fetchData= ()=>{
   const variable={apiDate: apiDate};
 
-  axios.post("http://localhost:5000/api/daily/powerTrading/", variable).then(response=>{
+  axios.post(baseUrl+"/api/daily/powerTrading/", variable).then(response=>{
 
   console.log("response",response)
     if(response.data.success){
