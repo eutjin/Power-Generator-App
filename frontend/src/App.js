@@ -47,7 +47,9 @@ function App() {
   console.log("data1", data1);
   const [opened, setOpened] = useState(false);
   const [type, setType] = useState("graph");
+  const [active, setActive]= useState('tab1')
   const theme = useMantineTheme();
+  
 
   const useStyles = createStyles((theme) => ({
     label: {
@@ -55,11 +57,17 @@ function App() {
     },
     item: {
       height: 200,
+      lineHeight: 1,
     },
     item2: {
       display: "flex",
       flexDirection: "column",
       position: "relative",
+      height: "100%",
+
+      '& Text':{
+        lineHeight: 1,
+      },
 
       [`@media (max-width: 755px)`]: {
         flexDirection: "row",
@@ -98,7 +106,39 @@ function App() {
       lineHeight: 1,
       bottom: 0,
     },
-    title: {},
+    sections: {
+      scrollMarginTop: 80,
+    },
+    navlist:{
+      borderRight: "2px",
+      borderColor: "black",
+      borderRadius: "10px",
+      
+      
+      '& a':{
+        lineHeight: 1.55,
+        textDecoration: 'none',
+        padding: 10,
+        backgroundColor: 'none',
+        marginTop: 10,
+        display: 'block',
+        color: 'black',
+        borderRadius: "10px",
+      }
+    },
+   active:{
+      
+      
+        lineHeight: 1.55,
+        textDecoration: 'none',
+        padding: 10,
+        backgroundColor: theme.colors.gray[2],
+        marginTop: 10,
+        display: 'block',
+        color: 'black',
+        borderRadius: "10px",
+      
+    },
   }));
   const { classes } = useStyles();
 
@@ -288,7 +328,7 @@ function App() {
     <main>
       <section>
         {/* AppShell from Mantine */}
-        <AppShell
+        <AppShell 
           styles={{
             main: {
               background:
@@ -305,23 +345,27 @@ function App() {
               p="md"
               hiddenBreakpoint="sm"
               hidden={!opened}
-              width={{ sm: 200, lg: 300 }}
+              width={{ sm: 200, lg: 220 }}
             >
-              <Text>Application navbar</Text>
+              <div className={classes.navlist} onClick={(e)=>setActive(e.target.id)}>
+              <a href="#Overview" id="tab0" className={active=="tab0"?classes.active : null} >Power Generation Overview</a>
+              <a href="#DailyEnergy" id="tab1" className={active=="tab1"?classes.active : null} >Average Energy Use</a>
+              <a href="#DailyTrade" id="tab2" className={active=="tab2"?classes.active : null} >Daily Electricity Trade </a>
+              <a href="#Corporation" id="tab3" className={active=="tab3"?classes.active : null} >Power Corporations </a>
+              <a href="#FuelComp" id="tab4" className={active=="tab4"?classes.active : null} >Fuel Type Composition </a>
+              <a href="#RenComp" id="tab5" className={active=="tab5"?classes.active : null} >Renewable Type Composition </a>
+              </div>
             </Navbar>
           }
-          footer={
-            <Footer height={60} p="md">
-              Application footer
-            </Footer>
-          }
+        
           header={
-            <Header height={70} p="md">
+            <Header height={60} p="md">
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   height: "100%",
+                  lineHeight: 60,
                 }}
               >
                 <MediaQuery largerThan="sm" styles={{ display: "none" }}>
@@ -339,8 +383,9 @@ function App() {
             </Header>
           }
         >
+          <div className="Container">
           <Container size={1140} px={0}>
-            <SimpleGrid
+            <SimpleGrid id="Overview" className={classes.sections}
               cols={5}
               breakpoints={[
                 { maxWidth: 980, cols: 2, spacing: "xs" },
@@ -543,22 +588,22 @@ function App() {
           <Space h="md" />
 
           {/*components start here  */}
-          <div>
+          <div id="DailyEnergy" className={classes.sections}>
             
           <Consumption data={metroData}/>
            
           </div>
           <Space h="md" />
-          <div>
+          <div id="DailyTrade" className={classes.sections}>
             <LineChart1 />
           </div>
 
           <Space h="md" />
 
-          <div>
+          <div id="Corporation" className={classes.sections}>
             <Container size={1140} px={0}>
               <Card radius="md" shadow="md">
-                <Card.Section className={classes.title} shadow="md">
+                <Card.Section  shadow="md">
                   <Group position="apart">
                     <Title1 order={4} px={15} py={15}>
                       Power corporations
@@ -596,7 +641,7 @@ function App() {
 
           {/* real */}
           <Space h="md" />
-          <div>
+          <div id="FuelComp" className={classes.sections}>
             <Container size={1140} px={0}>
               <Card radius="md" shadow="md">
                 <Card.Section className={classes.title} shadow="md">
@@ -616,7 +661,7 @@ function App() {
           </div>
           <Space h="md" />
 
-          <div>
+          <div id="RenComp" className={classes.sections}>
             <Container size={1140} px={0}>
               <Paper shadow="md" radius="md" p="md">
                 <DoughnutChart1 data={renewableCapacity} />
@@ -637,7 +682,7 @@ function App() {
             </Container>
           </div>
           <Space h="md" />
-          <div>
+          {/* <div>
             <Container size={1140} px={0}>
               <Paper shadow="md" radius="md" p="md">
                 <BarChart1 data={mostFuelCap} />
@@ -652,23 +697,12 @@ function App() {
               </Paper>
             </Container>
           </div>
-          <Space h="md" />
-          <div>
-            <Container size={1140} px={0}>
-              <Card radius="md" shadow="md">
-                <Card.Section className={classes.title} shadow="md">
-                  <Title1 order={3} px={15} py={15}>
-                    yesss
-                  </Title1>
-                  {/* <Divider size="xs" /> */}
-                </Card.Section>
-                <BarChart3 data={company} />
-              </Card>
-            </Container>
-          </div>
+          <Space h="md" /> */}
+        
           {/* <div>
             <PieChart1 data={mostCompanyTop} />
           </div> */}
+          </div>
         </AppShell>
       </section>
     </main>

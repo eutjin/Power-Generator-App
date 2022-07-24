@@ -36,6 +36,16 @@
     transform: rotate(360deg);
   }
 }
+/* 
+.Container{
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+ 
+} */
+
+html {
+  scroll-behavior: smooth;
+}
 
 #대전광역시{
   position: absolute;
