@@ -24,7 +24,7 @@ const api_key= process.env.API_KEY_2;
 
 
         }))
-    //    await console.log("array",array)
+       await console.log("array",array)
         return res.status(200).json({success: true, array})
 
 

@@ -142,6 +142,13 @@ const Consumption= ({data}) => {
         modalText:{
           lineHeight: 1,
         },
+        // metrovalue:{
+        //   color: 'green',
+
+        //   "& #강원도":{
+        //     color: "blue",
+        //   }
+        // },
         
       }));
       const { classes } = useStyles();
@@ -190,7 +197,7 @@ const fetchData=()=>{
 
     axios.post(baseUrl+"/api/consumption/average/", variable).then(response=>{
       if(response.data.success){
-        console.log("average", response.data.array)
+        console.log("average", response.data.array)//.array
         setConsData(response.data.array)
       }else{
         alert("get failed")
@@ -257,6 +264,14 @@ const metroPro=(metroNm)=>{
     return metroNm.slice(0,2)
   }
 }
+
+useEffect(()=>{
+console.table(metroPower)
+
+const a1= document.querySelectorAll("button#강원도")
+console.log("mydoc",a1[1])
+
+}, [metroPower])
 
 
 // const moddate=()=>{
@@ -667,8 +682,8 @@ Consumption.js:192 convertion 경기도 */}
                 </g>
               </svg>
 
-              {metroPower.map((item) => (
-                <button id={item.metro}>
+              {metroPower.map((item, index) => (
+                <button id={item.metro} style={{backgroundColor: `hsla(0, 100%, ${71+(index*0.7)}%, 1)`}}>
                   {metroPro(item.metro)}:{Math.round(item.powerUsage)}kWh
                 </button>
               ))}
