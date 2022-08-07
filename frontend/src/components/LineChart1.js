@@ -69,6 +69,13 @@ const LineChart = () => {
     title: {
       
     },
+    input:{
+      [`@media (max-width: 480px)`]: {
+        display:"flex",
+        flexDirection: "column",
+        // padding: "0.2rem",
+      },
+    },
     
   }));
   const { classes } = useStyles();
@@ -191,9 +198,10 @@ const moddate=()=>{
 
   //transform data2, and then filter by fuel time to obtain time and value for line plot
   const array1 = data2
-    .map((a) => ({ fuel: a.fuel, time: a.time, value: a.mgo }))
+    .map((a) => ({ fuel: a.fuel, time: a.time+":00", value: a.mgo }))
     .filter((type) => type.fuel == fuelType);
-  console.dir(array1);
+    console.log("data2", data2)
+  console.log("array1",array1);
 
   //anoter line for comparison with first data line
   const array2 = data2
@@ -204,14 +212,14 @@ const moddate=()=>{
   return (
     <div>
       {/* {data.map((v)=><li>{v.label}</li>)} */}
-      <Container size={1140} px={0}>
+      <Container size={1140} px={0} >
       <Card radius="md" shadow="md">
                 <Card.Section className={classes.title} shadow="md" >
                   <Title1 order={4} px={15} py={15} >Daily Electricity Trade</Title1>
                   <Divider size="xs" />
                 </Card.Section>
                  
-        <SimpleGrid cols={5} mt="md">
+        <SimpleGrid cols={5} mt="md" className={classes.input}>
           <div>
             <DatePicker
               label="Date"

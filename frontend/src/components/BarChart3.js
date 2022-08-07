@@ -42,8 +42,18 @@ const BarChart = ({ data }) => {
   const useStyles = createStyles((theme) => ({
     button:{
       display: 'flex',
-      alignItems: 'center',
+      // alignItems: 'center',
     justifyContent: 'center',
+
+    [`@media (max-width: 980px)`]: {
+      flexDirection:"column",
+      
+    },
+    },
+    inputSize:{
+      display: 'flex',
+      margin: "5px",
+      alignItems: 'center',
     }
   }));
   const { classes } = useStyles();
@@ -167,20 +177,26 @@ const BarChart = ({ data }) => {
         </Group> */}
       </div>
       <div className={classes.button}>
-        <Title1 order={5} mx="xs">Data size:</Title1>
-      <SegmentedControl
+        <div className={classes.inputSize}>
+        <Title1 order={5} mx="xs">
+          Data size:
+        </Title1>
+        <SegmentedControl
           value={filter}
           onChange={setFilter}
           data={[
             { label: "N=5", value: 5 },
-            { label: "N=10", value: 10},
+            { label: "N=10", value: 10 },
             { label: "N=15", value: 15 },
-            { label: "N=20", value: 20},
-            { label: "N=25", value: 25},
+            { label: "N=20", value: 20 },
+            { label: "N=25", value: 25 },
           ]}
-        />
-        <Space w="xl" />
-         <Title1 order={5} mx="xs">Data Type:</Title1>
+        /></div>
+        {/* <Space w="xl" /> */}
+        <div className={classes.inputSize}>
+        <Title1 order={5} mx="xs">
+          Data Type:
+        </Title1>
         <SegmentedControl
           value={sort}
           onChange={setSort}
@@ -188,7 +204,7 @@ const BarChart = ({ data }) => {
             { label: "No. of facility", value: "value" },
             { label: "Production capacity", value: "capacity" },
           ]}
-        />
+        /></div>
       </div>
     </div>
   );

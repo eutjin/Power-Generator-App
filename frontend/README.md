@@ -80,3 +80,10 @@ total capacity for each company
 4. responsive page
 5. energy price switch selector
 6. table view for city consumption
+
+7. icon for filter/sort table
+8. pie chart sizes
+9. tootip units + extra values
+10. unit tests
+11. viewBox="100 0 370 490"
+viewBox="170 0 250 520"

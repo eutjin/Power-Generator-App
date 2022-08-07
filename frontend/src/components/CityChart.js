@@ -90,9 +90,9 @@ const CityChart = ({ data}) => {
             labels: citySort.map((v) => v.city), //
             datasets: [
               {
-                label: "Average electrity use",
+                label: "Average electrcity use",
                 data: citySort.map((v) => v.powerUsage), //
-                barPercentage: 0.5,
+                barPercentage: citySort.length<5? 0.2: 0.5,
                 backgroundColor: ["#54bebe"],
               },
             ],
@@ -105,8 +105,17 @@ const CityChart = ({ data}) => {
                 display: false,
                 text: "my bar chart",
               },
+              tooltip:{
+                callbacks:{
+                  afterTitle:()=>{return "xyz"},
+                  label: (context)=>{return context.parsed.y+" kWh"},
+                },
+              },
+             
             },
             maintainAspectRatio: false,
+           
+            
             scales: {
               x: {
                 grid: {

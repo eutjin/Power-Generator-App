@@ -1,6 +1,7 @@
 import React, { useState, useContext, useReducer, useEffect } from "react";
 
-import { Table, ScrollArea, createStyles, useMantineTheme,} from '@mantine/core';
+import { Group, Table, ScrollArea, createStyles, useMantineTheme,} from '@mantine/core';
+import { SortDescending2 } from 'tabler-icons-react';
 
 function Table1({data}) {
   const [sort, setSort]=useState("capacity")
@@ -9,6 +10,7 @@ function Table1({data}) {
 
 const useStyles= createStyles((theme)=>({
   sort:{
+    
     '&:hover': {
     backgroundColor: theme.colors.gray[3],
     
@@ -59,14 +61,14 @@ const { classes} = useStyles();
   return (
     
     
-    <Table highlightOnHover>
+    <Table highlightOnHover p="lg">
         <ScrollArea sx={{ height: 450 }} >
       <thead className={classes.header}>
         <tr>
           <th>Number</th>
           <th>Company Name</th>
-          <th onClick={()=>setSort("value")} className={classes.sort}>Number of plants</th>
-          <th onClick={()=>setSort("capacity")} className={classes.sort}>Capacity</th>
+          <th onClick={()=>setSort("value")} className={classes.sort}><Group position="apart">Number of plants<SortDescending2 /></Group></th>
+          <th onClick={()=>setSort("capacity")} className={classes.sort}><Group position="apart">Capacity (kW)<SortDescending2 /></Group></th>
           
         </tr>
       </thead>

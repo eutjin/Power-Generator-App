@@ -11,7 +11,7 @@ import SvgTest from "./components/SvgTest";
 import DoughnutChart1 from "./components/DoughnutChart1";
 import Consumption from "./components/Consumption";
 import Table1 from "./components/Table1";
-import { BuildingFactory2, Plug, Leaf, InfoCircle } from "tabler-icons-react";
+import { BuildingFactory2, Plug, Leaf, InfoCircle, SortDescending2} from "tabler-icons-react";
 
 import {
   SegmentedControl,
@@ -64,6 +64,22 @@ function App() {
       flexDirection: "column",
       position: "relative",
       height: "100%",
+      // alignItems: "center",
+
+      '& Text':{
+        lineHeight: 1,
+      },
+
+      [`@media (max-width: 755px)`]: {
+        flexDirection: "row",
+      },
+    },
+    card2: {
+      display: "flex",
+      flexDirection: "column",
+      position: "relative",
+      height: "100%",
+      alignItems: "center",
 
       '& Text':{
         lineHeight: 1,
@@ -76,6 +92,7 @@ function App() {
     ring:{
       marginLeft: 'auto',
       marginRight: 'auto',
+      
 
       [`@media (max-width: 755px)`]: {
         marginLeft: 10,
@@ -83,8 +100,20 @@ function App() {
       
       },
     },
+    ringtest:{
+      width: '100px',
+      height: '100px',
+
+      
+      [`@media (max-width: 755px)`]: {
+        width: '70px',
+      height: '70px',
+      
+      },
+    },
     ringInfo:{
       lineHeight: 1,
+      alignItem: "center",
     },
     values:{
       [`@media (max-width: 755px)`]: {
@@ -137,8 +166,26 @@ function App() {
         display: 'block',
         color: 'black',
         borderRadius: "10px",
+        fontWeight: 500,
       
     },
+    inactive:{
+      
+      
+      lineHeight: 1.55,
+      textDecoration: 'none',
+      padding: 10,
+      backgroundColor: 'white',
+      marginTop: 10,
+      display: 'block',
+      color: 'green',
+      borderRadius: "10px",
+      transition: '150ms ease',
+    '&:hover':{
+      backgroundColor: theme.colors.gray[2],
+      fontWeight: 500,
+    }
+  },
   }));
   const { classes } = useStyles();
 
@@ -171,7 +218,7 @@ function App() {
     }
     return total;
   }, {});
-  console.log(fuel);
+  console.log("fuel",fuel);
 
   const mostFuel = Object.values(fuel).sort((a, b) => {
     return b.value - a.value;
@@ -180,7 +227,7 @@ function App() {
   const mostFuelCap = Object.values(fuel).sort((a, b) => {
     return b.capacity - a.capacity;
   }); //power plant generation capacity grouped by capacity
-  console.dir(mostFuelCap);
+  console.log("mostFuelCap",mostFuelCap);
 
   //largest generation facility for each fuel type
   let largestByFuel = data1.reduce((total, item, index) => {
@@ -196,7 +243,7 @@ function App() {
 
     return total;
   }, {});
-  console.dir(largestByFuel);
+  console.log("largestByFuel",largestByFuel);
 
   let genSource = data1.reduce((total, item) => {
     const { genSrc, pcap } = item;
@@ -213,7 +260,7 @@ function App() {
     }
     return total;
   }, {});
-  console.dir(genSource);
+  console.log("genSource",genSource);
 
   //total number of power plants in Korea
   let totalPlant = data1.length;
@@ -226,7 +273,7 @@ function App() {
       return total;
     }, 0)
   );
-  console.dir(totalCapacity);
+  console.log("totalCapacity",totalCapacity);
 
   // //total capacity of renewable energy (filter does not work)
   // let totalRenCapacity = mostFuelCap.filter(item => (item.label=="태양광"||"원자력" ||"부생가스" ||"수력" ||"풍력" ||"바이오매스" ||"해양에너지")).reduce((total, item) => {
@@ -268,7 +315,7 @@ function App() {
     }
     return total;
   }, 0);
-  console.dir(totalRenCapacity);
+  console.log("totalRenCapacity",totalRenCapacity);
 
   const renPercent = Math.round((totalRenCapacity / totalCapacity) * 100);
   console.dir(renPercent);
@@ -328,7 +375,7 @@ function App() {
     <main>
       <section>
         {/* AppShell from Mantine */}
-        <AppShell 
+        <AppShell
           styles={{
             main: {
               background:
@@ -347,17 +394,67 @@ function App() {
               hidden={!opened}
               width={{ sm: 200, lg: 220 }}
             >
-              <div className={classes.navlist} onClick={(e)=>setActive(e.target.id)}>
-              <a href="#Overview" id="tab0" className={active=="tab0"?classes.active : null} >Power Generation Overview</a>
-              <a href="#DailyEnergy" id="tab1" className={active=="tab1"?classes.active : null} >Average Energy Use</a>
-              <a href="#DailyTrade" id="tab2" className={active=="tab2"?classes.active : null} >Daily Electricity Trade </a>
-              <a href="#Corporation" id="tab3" className={active=="tab3"?classes.active : null} >Power Corporations </a>
-              <a href="#FuelComp" id="tab4" className={active=="tab4"?classes.active : null} >Fuel Type Composition </a>
-              <a href="#RenComp" id="tab5" className={active=="tab5"?classes.active : null} >Renewable Type Composition </a>
+              <div
+                className={classes.navlist}
+                onClick={(e) => setActive(e.target.id)}
+              >
+                <a
+                  href="#Overview"
+                  id="tab0"
+                  className={
+                    active == "tab0" ? classes.active : classes.inactive
+                  }
+                >
+                  Power Generation Overview
+                </a>
+                <a
+                  href="#DailyEnergy"
+                  id="tab1"
+                  className={
+                    active == "tab1" ? classes.active : classes.inactive
+                  }
+                >
+                  Average Energy Use
+                </a>
+                <a
+                  href="#DailyTrade"
+                  id="tab2"
+                  className={
+                    active == "tab2" ? classes.active : classes.inactive
+                  }
+                >
+                  Daily Electricity Trade{" "}
+                </a>
+                <a
+                  href="#Corporation"
+                  id="tab3"
+                  className={
+                    active == "tab3" ? classes.active : classes.inactive
+                  }
+                >
+                  Power Corporations{" "}
+                </a>
+                <a
+                  href="#FuelComp"
+                  id="tab4"
+                  className={
+                    active == "tab4" ? classes.active : classes.inactive
+                  }
+                >
+                  Fuel Type Composition{" "}
+                </a>
+                <a
+                  href="#RenComp"
+                  id="tab5"
+                  className={
+                    active == "tab5" ? classes.active : classes.inactive
+                  }
+                >
+                  Renewable Type Composition{" "}
+                </a>
               </div>
             </Navbar>
           }
-        
           header={
             <Header height={60} p="md">
               <div
@@ -384,42 +481,48 @@ function App() {
           }
         >
           <div className="Container">
-          <Container size={1140} px={0}>
-            <SimpleGrid id="Overview" className={classes.sections}
-              cols={5}
-              breakpoints={[
-                { maxWidth: 980, cols: 2, spacing: "xs" },
-                { maxWidth: 755, cols: 1, spacing: "xs" },
-              ]}
-            >
-              <div>
-                <Paper shadow="md" radius="md" p="md" className={classes.item2}>
-                  
+            <Container size={1140} px={0}>
+              <SimpleGrid
+                id="Overview"
+                className={classes.sections}
+                cols={5}
+                breakpoints={[
+                  { maxWidth: 980, cols: 2, spacing: "xs" },
+                  { maxWidth: 755, cols: 1, spacing: "xs" },
+                ]}
+              >
+                <div>
+                  <Paper
+                    shadow="md"
+                    radius="md"
+                    p="md"
+                    className={classes.item2}
+                  >
                     <BuildingFactory2 size={40} />
-                    
-                  <Space h="lg" />
-                  <div className={classes.values}>
-                  <Text weight={600} className={classes.itemtext}>
-                    {totalPlant.toLocaleString()}
-                  </Text>
-                  <Text color="dimmed">Total generation facility</Text>
-                  </div>
-                  <div className={classes.tt}>
-                    <Tooltip
-                      wrapLines
-                      width={150}
-                      withArrow
-                      transition="fade"
-                      transitionDuration={120}
-                      label="The total number of power generation facilities within South Korea"
-                    >
-                      <InfoCircle size={20} />
-                    </Tooltip>
-                  </div>
-                </Paper>
-              </div>
 
-              {/* <div>
+                    <Space h="lg" />
+                    <div className={classes.values}>
+                      <Text weight={600} className={classes.itemtext}>
+                        {totalPlant.toLocaleString()}
+                      </Text>
+                      <Text color="dimmed">Total generation facility</Text>
+                    </div>
+                    <div className={classes.tt}>
+                      <Tooltip
+                        wrapLines
+                        width={150}
+                        withArrow
+                        transition="fade"
+                        transitionDuration={120}
+                        label="The total number of power generation facilities within South Korea"
+                      >
+                        <InfoCircle size={20} />
+                      </Tooltip>
+                    </div>
+                  </Paper>
+                </div>
+
+                {/* <div>
                 <Paper shadow="md" radius="md" p="md" className={classes.item}>
                   <Group position="apart">
                     <BuildingFactory2 size={40} />
@@ -443,37 +546,42 @@ function App() {
                 </Paper>
               </div> */}
 
-              <div>
-                <Paper shadow="md" radius="md" p="md" className={classes.item2}>
-                  <Plug size={40} />
+                <div>
+                  <Paper
+                    shadow="md"
+                    radius="md"
+                    p="md"
+                    className={classes.item2}
+                  >
+                    <Plug size={40} />
 
-                  <Space h="lg" />
-                  <div className={classes.values}>
-                    <Group spacing={5}>
-                      <Text weight={600} className={classes.itemtext}>
-                        {totalCapacity.toLocaleString()}
-                      </Text>
-                      <Text weight={600} className={classes.itemtext2}>
-                        MW
-                      </Text>
-                    </Group>
-                    <Text color="dimmed">Total generation capacity</Text>
-                  </div>
-                  <div className={classes.tt}>
-                    <Tooltip
-                      wrapLines
-                      width={150}
-                      withArrow
-                      transition="fade"
-                      transitionDuration={120}
-                      label="The total power generation capacity within South Korea"
-                    >
-                      <InfoCircle size={20} />
-                    </Tooltip>
-                  </div>
-                </Paper>
-              </div>
-              {/* <div>
+                    <Space h="lg" />
+                    <div className={classes.values}>
+                      <Group spacing={5}>
+                        <Text weight={600} className={classes.itemtext}>
+                          {totalCapacity.toLocaleString()}
+                        </Text>
+                        <Text weight={600} className={classes.itemtext2}>
+                          MW
+                        </Text>
+                      </Group>
+                      <Text color="dimmed">Total generation capacity</Text>
+                    </div>
+                    <div className={classes.tt}>
+                      <Tooltip
+                        wrapLines
+                        width={150}
+                        withArrow
+                        transition="fade"
+                        transitionDuration={120}
+                        label="The total power generation capacity within South Korea"
+                      >
+                        <InfoCircle size={20} />
+                      </Tooltip>
+                    </div>
+                  </Paper>
+                </div>
+                {/* <div>
                 <Paper shadow="md" radius="md" p="md" className={classes.item}>
                   <Plug size={40} />
 
@@ -489,37 +597,41 @@ function App() {
                   <Text color="dimmed">Total generation capacity</Text>
                 </Paper>
               </div> */}
-              <div>
-                <Paper shadow="md" radius="md" p="md" className={classes.item2}>
-                  <Leaf size={40} />
-                  <Space h="lg" />
-                  <div className={classes.values}>
-                  <Group spacing={5}>
-                    <Text weight={600} className={classes.itemtext}>
-                      {Math.round(totalRenCapacity).toLocaleString()}
-                    </Text>
-                    <Text weight={600} className={classes.itemtext2}>
-                      MW
-                    </Text>
-
-                  </Group>
-                  <Text color="dimmed">Total renewable capacity</Text>
-                  </div>
-                  <div className={classes.tt}>
-                    <Tooltip
-                      wrapLines
-                      width={150}
-                      withArrow
-                      transition="fade"
-                      transitionDuration={120}
-                      label="The total renewable power generation capacity within South Korea"
-                    >
-                      <InfoCircle size={20} />
-                    </Tooltip>
-                  </div>
-                </Paper>
-              </div>
-              {/* <div>
+                <div>
+                  <Paper
+                    shadow="md"
+                    radius="md"
+                    p="md"
+                    className={classes.item2}
+                  >
+                    <Leaf size={40} />
+                    <Space h="lg" />
+                    <div className={classes.values}>
+                      <Group spacing={5}>
+                        <Text weight={600} className={classes.itemtext}>
+                          {Math.round(totalRenCapacity).toLocaleString()}
+                        </Text>
+                        <Text weight={600} className={classes.itemtext2}>
+                          MW
+                        </Text>
+                      </Group>
+                      <Text color="dimmed">Total renewable capacity</Text>
+                    </div>
+                    <div className={classes.tt}>
+                      <Tooltip
+                        wrapLines
+                        width={150}
+                        withArrow
+                        transition="fade"
+                        transitionDuration={120}
+                        label="The total renewable power generation capacity within South Korea"
+                      >
+                        <InfoCircle size={20} />
+                      </Tooltip>
+                    </div>
+                  </Paper>
+                </div>
+                {/* <div>
                 <Paper shadow="md" radius="md" p="md" className={classes.item}>
                   <Leaf size={40} />
                   <Space h="lg" />
@@ -534,100 +646,120 @@ function App() {
                   <Text color="dimmed">Total renewable capacity</Text>
                 </Paper>
               </div> */}
-              <div>
-                <Paper shadow="md" radius="md" p="md" className={classes.item2}>
-                  <RingProgress className={classes.ring} size={110}
-                    sections={[{ value: renPercent, color: "#0f9583" }]}
-                    label={
-                      <Text
-                        color="#0f9583"
-                        weight={700}
-                        align="center"
-                        size="xl"
-                      >
-                        {renPercent}%
-                      </Text>
-                    }
-                  />
-                  <Text color="dimmed" className={classes.ringInfo}>Total renewable capacity</Text>
-                </Paper>
-              </div>
-              <div>
-                <Paper shadow="md" radius="md" p="xs" className={classes.item2}>
-                  <RingProgress className={classes.ring} size={110}
-                    sections={[
-                      { value: mostFuelTypePercent, color: "#ff7070" },
-                    ]}
-                    label={
-                      <div>
+                <div>
+                  <Paper
+                    shadow="md"
+                    radius="md"
+                    p="xs"
+                    className={classes.card2}
+                  >
+                    <RingProgress
+                      classNames={{root:classes.ringtest}}
+                      size={100}
+                      thickness={6}
+                      sections={[{ value: renPercent, color: "#0f9583" }]}
+                      label={
                         <Text
-                          color="#ff7070"
+                          color="#0f9583"
                           weight={700}
                           align="center"
                           size="xl"
-                          className={classes.label}
                         >
-                          {mostFuelType.label}
+                          {renPercent}%
                         </Text>
-                        <Text
-                          color="#ff7070"
-                          weight={700}
-                          align="center"
-                          size="lg"
-                        >
-                          {mostFuelTypePercent}%
-                        </Text>
-                      </div>
-                    }
-                  />
-                  <Text color="dimmed">Highest capacity by Fuel type</Text>
-                </Paper>
-              </div>
-            </SimpleGrid>
-          </Container>
-          <Space h="md" />
-
-          {/*components start here  */}
-          <div id="DailyEnergy" className={classes.sections}>
-            
-          <Consumption data={metroData}/>
-           
-          </div>
-          <Space h="md" />
-          <div id="DailyTrade" className={classes.sections}>
-            <LineChart1 />
-          </div>
-
-          <Space h="md" />
-
-          <div id="Corporation" className={classes.sections}>
-            <Container size={1140} px={0}>
-              <Card radius="md" shadow="md">
-                <Card.Section  shadow="md">
-                  <Group position="apart">
-                    <Title1 order={4} px={15} py={15}>
-                      Power corporations
-                    </Title1>
-                    <SegmentedControl
-                     
-                      mx={15}
-                      color="green"
-                      value={type}
-                      onChange={setType}
-                      data={[
-                        { label: "Graph", value: "graph" },
-                        { label: "Table", value: "table" },
-                      ]}
+                      }
                     />
-                  </Group>
-                  <Divider size="xs" />
-                </Card.Section>
-                {type == "graph" ? (
-                  <BarChart3 data={company} />
-                ) : (
-                  <Table1 data={company} />
-                )}
-                {/* <Tabs>
+                    <Text color="dimmed" className={classes.ringInfo}>
+                      Total renewable capacity
+                    </Text>
+                  </Paper>
+                </div>
+                <div>
+                  <Paper
+                    shadow="md"
+                    radius="md"
+                    p="xs"
+                    className={classes.card2}
+                  >
+                    <RingProgress
+                      className={classes.ring}
+                      size={100}
+                      thickness={6}
+                      breakpoints={[
+                        { maxWidth: 755, size: 80}
+                      ]}
+                      sections={[
+                        { value: mostFuelTypePercent, color: "#ff7070" },
+                      ]}
+                     
+                      label={
+                        <div>
+                          <Text
+                            color="#ff7070"
+                            weight={700}
+                            align="center"
+                            size="xl"
+                            className={classes.label}
+                          >
+                            {mostFuelType.label}
+                          </Text>
+                          <Text
+                            color="#ff7070"
+                            weight={700}
+                            align="center"
+                            size="lg"
+                            className={classes.label}
+                          >
+                            {mostFuelTypePercent}%
+                          </Text>
+                        </div>
+                      }
+                    />
+                    <Text color="dimmed">Highest capacity by Fuel type</Text>
+                  </Paper>
+                </div>
+              </SimpleGrid>
+            </Container>
+            <Space h="md" />
+
+            {/*components start here  */}
+            <div id="DailyEnergy" className={classes.sections}>
+              <Consumption data={metroData} />
+            </div>
+            <Space h="md" />
+            <div id="DailyTrade" className={classes.sections}>
+              <LineChart1 />
+            </div>
+
+            <Space h="md" />
+
+            <div id="Corporation" className={classes.sections}>
+              <Container size={1140} px={0}>
+                <Card radius="md" shadow="md">
+                  <Card.Section shadow="md">
+                    <Group position="apart">
+                      <Title1 order={4} px={15} py={15}>
+                        Power corporations
+                      </Title1>
+                      <SegmentedControl
+                        mx={15}
+                        color="teal"
+                        value={type}
+                        onChange={setType}
+                        data={[
+                          { label: "Graph", value: "graph" },
+                          { label: "Table", value: "table" },
+                        ]}
+                      />
+                    </Group>
+                    <Divider size="xs" />
+                  </Card.Section>
+                  {type == "graph" ? (
+                    <BarChart3 data={company} />
+                  ) : (
+                    <Table1 data={company} />
+                  )}
+                  {/* <Tabs>
                   <Tabs.Tab label="Table">
                     <Table1 data={company} />
                   </Tabs.Tab>
@@ -635,54 +767,57 @@ function App() {
                     <BarChart3 data={company} />
                   </Tabs.Tab>
                 </Tabs> */}
-              </Card>
-            </Container>
-          </div>
+                </Card>
+              </Container>
+            </div>
 
-          {/* real */}
-          <Space h="md" />
-          <div id="FuelComp" className={classes.sections}>
-            <Container size={1140} px={0}>
+            {/* real */}
+            <Space h="md" />
+            <div id="FuelComp" className={classes.sections}>
+              <Container size={1140} px={0}>
+                <Card radius="md" shadow="md">
+                  <Card.Section className={classes.title} shadow="md">
+                    <Title1 order={4} px={15} py={15}>
+                      Fuel type composition
+                    </Title1>
+                    <Divider size="xs" />
+                  </Card.Section>
+                  <Space h="md" />
+
+                  <DoughnutChart1
+                    data={mostFuelCap}
+                    totalCapacity={totalCapacity}
+                  />
+                </Card>
+              </Container>
+            </div>
+            <Space h="md" />
+
+            <div id="RenComp" className={classes.sections}>
+              <Container size={1140} px={0}>
               <Card radius="md" shadow="md">
-                <Card.Section className={classes.title} shadow="md">
-                  <Title1 order={4} px={15} py={15}>
-                    Fuel type composition
-                  </Title1>
-                  <Divider size="xs" />
-                </Card.Section>
-                <Space h="md" />
+                  <Card.Section className={classes.title} shadow="md">
+                    <Title1 order={4} px={15} py={15}>
+                      Renewable type composition
+                    </Title1>
+                    <Divider size="xs" />
+                  </Card.Section>
+                  <Space h="md" />
 
-                <DoughnutChart1
-                  data={mostFuelCap}
-                  totalCapacity={totalCapacity}
-                />
-              </Card>
-            </Container>
-          </div>
-          <Space h="md" />
+                  
+                  
+                  <DoughnutChart1 data={renewableCapacity} totalCapacity={totalRenCapacity}/>
+                  </Card>
+              </Container>
+            </div>
+            <Space h="md" />
 
-          <div id="RenComp" className={classes.sections}>
-            <Container size={1140} px={0}>
-              <Paper shadow="md" radius="md" p="md">
-                <DoughnutChart1 data={renewableCapacity} />
-              </Paper>
-            </Container>
-          </div>
-          <Space h="md" />
-
-          {/* <div>
+            {/* <div>
             <Consumption data={metroData} />
           </div> */}
 
-          <div>
-            <Container size={1140} px={0}>
-              <Paper shadow="md" radius="md" p="md">
-                <Table1 data={company} />
-              </Paper>
-            </Container>
-          </div>
-          <Space h="md" />
-          {/* <div>
+            
+            {/* <div>
             <Container size={1140} px={0}>
               <Paper shadow="md" radius="md" p="md">
                 <BarChart1 data={mostFuelCap} />
@@ -698,8 +833,8 @@ function App() {
             </Container>
           </div>
           <Space h="md" /> */}
-        
-          {/* <div>
+
+            {/* <div>
             <PieChart1 data={mostCompanyTop} />
           </div> */}
           </div>
