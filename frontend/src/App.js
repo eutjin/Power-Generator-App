@@ -89,6 +89,9 @@ function App() {
         flexDirection: "row",
       },
     },
+    menu:{
+      zIndex: "1000",
+    },
     ring:{
       marginLeft: 'auto',
       marginRight: 'auto',
@@ -392,7 +395,7 @@ function App() {
               p="md"
               hiddenBreakpoint="sm"
               hidden={!opened}
-              width={{ sm: 200, lg: 220 }}
+              width={{ sm: 200, lg: 220 }} className={classes.menu}
             >
               <div
                 className={classes.navlist}
@@ -403,7 +406,7 @@ function App() {
                   id="tab0"
                   className={
                     active == "tab0" ? classes.active : classes.inactive
-                  }
+                  } onClick={() => setOpened(false)}
                 >
                   Power Generation Overview
                 </a>
@@ -412,7 +415,7 @@ function App() {
                   id="tab1"
                   className={
                     active == "tab1" ? classes.active : classes.inactive
-                  }
+                  } onClick={() => setOpened(false)}
                 >
                   Average Energy Use
                 </a>
@@ -421,7 +424,7 @@ function App() {
                   id="tab2"
                   className={
                     active == "tab2" ? classes.active : classes.inactive
-                  }
+                  } onClick={() => setOpened(false)}
                 >
                   Daily Electricity Trade{" "}
                 </a>
@@ -430,7 +433,7 @@ function App() {
                   id="tab3"
                   className={
                     active == "tab3" ? classes.active : classes.inactive
-                  }
+                  } onClick={() => setOpened(false)}
                 >
                   Power Corporations{" "}
                 </a>
@@ -439,7 +442,7 @@ function App() {
                   id="tab4"
                   className={
                     active == "tab4" ? classes.active : classes.inactive
-                  }
+                  } onClick={() => setOpened(false)}
                 >
                   Fuel Type Composition{" "}
                 </a>
@@ -448,7 +451,7 @@ function App() {
                   id="tab5"
                   className={
                     active == "tab5" ? classes.active : classes.inactive
-                  }
+                  } onClick={() => setOpened(false)}
                 >
                   Renewable Type Composition{" "}
                 </a>

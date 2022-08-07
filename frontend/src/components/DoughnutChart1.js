@@ -43,7 +43,8 @@ const useStyles = createStyles((theme) => ({
   overflow: 'hidden',
   whiteSpace: 'nowrap',
   textOverflow: 'ellipsis',
-    
+  [`@media (max-width: 755px)`]: {
+    textAlign: "center",}
   },
   cardcontent:{
     // fontWeight: 500,
@@ -69,12 +70,25 @@ const useStyles = createStyles((theme) => ({
   },
   containerSection:{
     width: "50%",
+      // display: "flex",
+      // flexDirection: "column",
+      // justifyContent: "center",
+      // alignItems: "center",
     
     [`@media (max-width: 755px)`]: {
       width: "25%",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
       
     },
     
+    
+  },
+  containerSectionInner:{
+    display: "flex",
+    justifyContent:"center",
   },
   containerPercent:{
     display:"flex",
@@ -174,7 +188,7 @@ const { classes } = useStyles();
                             withArrow
                             transition="fade"
                             transitionDuration={120}
-                            label={v.label}
+                            label={v.label} 
                           >
                             <Text
                               align="left"
