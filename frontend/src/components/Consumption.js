@@ -61,6 +61,8 @@ const Consumption= ({data}) => {
     const [consData, setConsData]= useState([])
   const [metroCons, setMetroCons]= useState([])
   const [metroPower, setMetroPower]= useState([])
+  const [metroBill, setMetroBill]= useState([])
+
   const [consModal, setConsModal]= useState(false)
   const [metroNm, setMetroNm]= useState({})
   const [metroAllCity, setMetroAllCity]= useState([])
@@ -269,18 +271,19 @@ const fetchData=()=>{
 
 useEffect(()=>{
   let cons= consData.reduce((total, item)=>{
-    const {metro, houseCnt, powerUsage}= item;
+    const {metro, houseCnt, powerUsage, bill}= item;
 
     if (!total[metro]){
-        total[metro]= {houseCnt: houseCnt, city: 1, ttlPower: houseCnt*powerUsage, metro: metro}
+        total[metro]= {houseCnt: houseCnt, city: 1, ttlPower: houseCnt*powerUsage, ttlBill: houseCnt*bill,  metro: metro}
     }
     else{
-        total[metro]= {...total[metro],ttlPower:total[metro].ttlPower+(houseCnt*powerUsage), houseCnt:total[metro].houseCnt+houseCnt, city: total[metro].city+1}
+        total[metro]= {...total[metro],ttlPower:total[metro].ttlPower+(houseCnt*powerUsage), ttlBill:total[metro].ttlBill + (houseCnt*bill), houseCnt:total[metro].houseCnt+houseCnt, city: total[metro].city+1}
     }
 
 return total;
 }, {})
 console.log("cons", cons)
+console.log("consData", consData)
 setMetroCons(Object.values(cons))
 
 console.log("joke",metroCons)
@@ -289,15 +292,21 @@ console.log("joke",metroCons)
 }, [consData])
 
 useEffect(()=>{
-  const modMetroCons= metroCons.map((item)=>({...item, powerUsage: item.ttlPower/item.houseCnt}))
+  const modMetroCons= metroCons.map((item)=>({...item, powerUsage: item.ttlPower/item.houseCnt, powerBill: item.ttlBill/item.houseCnt}))
   console.log("joke2", modMetroCons)
   const desModMetroCons= Object.values(modMetroCons).sort((a,b)=>{
     return b.powerUsage - a.powerUsage;
   })
   setMetroPower(desModMetroCons)//7
+
+  const desModMetroBill= Object.values(modMetroCons).sort((a,b)=>{
+    return b.powerBill - a.powerBill;
+  })
+  setMetroBill(desModMetroBill)
 }, [metroCons])
 
 useEffect(()=>{
+  console.log("metroPowwer",metroPower)
   console.dir("joke3", (metroPower.find(item=>item.metro=="강원도")))
   // console.log("joke3", (metroPower.filter(item=>item.metro=="강원도")[0]).powerUsage)
 }, [metroPower])
@@ -549,7 +558,7 @@ const inputs=(<>
             {/* <Text>no. of residence: {metroNm.houseCnt}</Text>
             <Text>Daily Power Usage: {Math.round(metroNm.powerUsage)}kWh</Text> */}
             <CityChart data={metroAllCity} />
-            <Button onClick={() => setConsModal(false)}>No</Button>
+            
           </Modal>
           {/* convertion 강원도
 Consumption.js:192 convertion 충청북도

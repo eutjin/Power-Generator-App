@@ -54,6 +54,21 @@ const BarChart = ({ data }) => {
       display: 'flex',
       margin: "5px",
       alignItems: 'center',
+      width: '100%',
+      flexWrap: "wrap",
+    },
+    inputLeft:{
+      [`@media (max-width: 480px)`]: {
+        fontSize: "0.8rem",
+        margin: '5px',
+        
+      },
+    },
+    inputRight:{
+      [`@media (max-width: 480px)`]: {
+        fontSize: "0.8rem",
+        margin: '5px',
+      },
     }
   }));
   const { classes } = useStyles();
@@ -178,10 +193,10 @@ const BarChart = ({ data }) => {
       </div>
       <div className={classes.button}>
         <div className={classes.inputSize}>
-        <Title1 order={5} mx="xs">
+        <Title1 order={5} mx="xs" className={classes.inputLeft}>
           Data size:
         </Title1>
-        <SegmentedControl
+        <SegmentedControl className={classes.inputRight}
           value={filter}
           onChange={setFilter}
           data={[
@@ -194,16 +209,16 @@ const BarChart = ({ data }) => {
         /></div>
         {/* <Space w="xl" /> */}
         <div className={classes.inputSize}>
-        <Title1 order={5} mx="xs">
+        <Title1 order={5} mx="xs" className={classes.inputLeft}>
           Data Type:
         </Title1>
-        <SegmentedControl
+        <SegmentedControl className={classes.inputRight}
           value={sort}
           onChange={setSort}
           data={[
             { label: "No. of facility", value: "value" },
             { label: "Production capacity", value: "capacity" },
-          ]}
+          ]} 
         /></div>
       </div>
     </div>
