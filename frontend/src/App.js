@@ -90,7 +90,7 @@ function App() {
       },
     },
     menu:{
-      zIndex: "1000",
+      zIndex: "100",
     },
     ring:{
       marginLeft: 'auto',
@@ -189,6 +189,8 @@ function App() {
       fontWeight: 500,
     }
   },
+
+ 
   }));
   const { classes } = useStyles();
 
@@ -740,12 +742,13 @@ function App() {
               <Container size={1140} px={0}>
                 <Card radius="md" shadow="md">
                   <Card.Section shadow="md">
-                    <Group position="apart">
+                   <Group position="apart" noWrap>
                       <Title1 order={4} px={15} py={15}>
                         Power corporations
                       </Title1>
                       <SegmentedControl
                         mx={15}
+                        size="sm"
                         color="teal"
                         value={type}
                         onChange={setType}

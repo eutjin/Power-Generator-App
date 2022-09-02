@@ -76,6 +76,17 @@ const LineChart = () => {
         // padding: "0.2rem",
       },
     },
+    chartContainer:{
+      position: "relative",
+      
+    },
+    chartTitleY:{
+      position: "absolute",
+      top: "1.5rem",
+      // left: "0.3rem",
+      fontSize: "10px",
+    },
+    
     
   }));
   const { classes } = useStyles();
@@ -300,7 +311,10 @@ const moddate=()=>{
             />
           </div>
           </SimpleGrid>
-          <div>
+          <div className={classes.chartContainer}>
+          <div className={classes.chartTitleY}><Text size="sm">MWh</Text></div>
+          <div className={classes.chart}>
+            
             <Line
               data={{
                 labels: array1.map((v) => v.time), //
@@ -339,7 +353,7 @@ const moddate=()=>{
                       text: 'Hours',
                       font: {
                               family: 'Arial',
-                              size: 18,
+                              size: 14,
                               style: 'normal',
                               //  weight: 'bold',
                              },
@@ -348,7 +362,8 @@ const moddate=()=>{
                   y: {
                     
                     title:{
-                      display: true,
+                      display: false,
+                      position: 'bottom',
                       text: 'MWh',
                       font: {
                         family: 'Arial',
@@ -377,7 +392,7 @@ const moddate=()=>{
                 },
               }}
             />
-          </div>
+          </div></div>
         </Card>
       </Container>
     </div>

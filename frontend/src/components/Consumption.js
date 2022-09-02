@@ -99,7 +99,7 @@ const Consumption= ({data}) => {
           },
         },
         modalInfo:{
-          width: "80%",
+          width: "90%",
           display: "flex",
           flexWrap: "wrap",
           padding: "10px",

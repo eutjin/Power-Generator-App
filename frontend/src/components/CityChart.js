@@ -45,7 +45,17 @@ const CityChart = ({ data}) => {
       display: 'flex',
       alignItems: 'center',
     justifyContent: 'center',
-    }
+    },
+    chartContainer:{
+      position: "relative",
+      
+    },
+    chartTitleY:{
+      position: "absolute",
+      
+      // left: "0.3rem",
+      fontSize: "10px",
+    },
   }));
   const { classes } = useStyles();
 
@@ -83,6 +93,9 @@ const CityChart = ({ data}) => {
       
     </Tabs>
         </div> */}
+     
+     <div className={classes.chartContainer}>
+          <div className={classes.chartTitleY}><Text size="sm">MWh</Text></div>
       <div >
       
         <Bar
@@ -125,7 +138,7 @@ const CityChart = ({ data}) => {
 
               yAxes: {
                 title: {
-                  display: true,
+                  display: false,
                   text: "kWh/day",
                   align: "center",
                   font: {
@@ -139,7 +152,7 @@ const CityChart = ({ data}) => {
             },
           }}
         />
-      </div>
+      </div></div>
       <div>
         {/* <Group>
           <Button
@@ -184,7 +197,7 @@ const CityChart = ({ data}) => {
           </Button>
         </Group> */}
       </div>
-      <div className={classes.button}>
+      {/* <div className={classes.button}>
         <Title1 order={4} mx="sm">Data size:</Title1>
       <SegmentedControl
           value={filter}
@@ -207,7 +220,7 @@ const CityChart = ({ data}) => {
             { label: "Production capacity", value: "capacity" },
           ]}
         />
-      </div>
+      </div> */}
     </div>
   );
 };
