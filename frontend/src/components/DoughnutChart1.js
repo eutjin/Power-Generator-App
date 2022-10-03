@@ -167,6 +167,7 @@ const { classes } = useStyles();
             cols={5}
             mt="md"
             breakpoints={[
+              { maxWidth: 1150, cols: 4, spacing: "xs" },
               { maxWidth: 980, cols: 2, spacing: "xs" },
               { maxWidth: 755, cols: 1, spacing: "xs" },
             ]}

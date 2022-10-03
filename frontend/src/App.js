@@ -6,7 +6,7 @@ import BarChart1 from "./components/BarChart1";
 import BarChart2 from "./components/BarChart2";
 import BarChart3 from "./components/BarChart3";
 import PieChart1 from "./components/PieChart1";
-import LineChart1 from "./components/LineChart1";
+import LineChart1 from "./components/DailyElectricityTrade";
 import SvgTest from "./components/SvgTest";
 import DoughnutChart1 from "./components/DoughnutChart1";
 import Consumption from "./components/Consumption";
@@ -63,7 +63,8 @@ function App() {
       display: "flex",
       flexDirection: "column",
       position: "relative",
-      height: "100%",
+     height: "100%",
+      
       // alignItems: "center",
 
       '& Text':{
@@ -104,15 +105,15 @@ function App() {
       },
     },
     ringtest:{
-      width: '100px',
-      height: '100px',
+      width: 20,
+      height: 20,
 
       
-      [`@media (max-width: 755px)`]: {
-        width: '70px',
-      height: '70px',
+      // [`@media (max-width: 755px)`]: {
+      //   width: '70px',
+      // height: '70px',
       
-      },
+      // },
     },
     ringInfo:{
       lineHeight: 1,
@@ -127,14 +128,14 @@ function App() {
       position: "absolute",
       right: "10px",
       top: "10px",
-      zIndex: 100,
+      zIndex: 50,
     },
     itemtext: {
-      fontSize: 25,
+      fontSize: 22,
       lineHeight: 1,
     },
     itemtext2: {
-      fontSize: 20,
+      fontSize: 15,
       lineHeight: 1,
       bottom: 0,
     },
@@ -189,7 +190,29 @@ function App() {
       fontWeight: 500,
     }
   },
-
+  topLogoContainer:{
+    display: 'flex',
+    alignItems: 'start',
+    
+    
+  },
+  topLogoText1:{
+    fontSize: 22,
+    fontWeight: 800,
+    opacity: 0.7,
+    fontFamily: 'Greycliff CF, sans-serif',
+  },
+  topLogoText2:{
+    fontSize: 22,
+    fontWeight: 800,
+    opacity: 0.4,
+    fontFamily: 'Greycliff CF, sans-serif',
+  },
+  topLogoText3:{
+    fontSize: 11,
+    fontWeight: 500,
+    opacity: 0.5,
+  },
  
   }));
   const { classes } = useStyles();
@@ -480,7 +503,10 @@ function App() {
                   />
                 </MediaQuery>
 
-                <Text>Application header</Text>
+<div  className={classes.topLogoContainer}>
+<Text className={classes.topLogoText1}>Ener</Text><Text className={classes.topLogoText2}>lyzr</Text><Text className={classes.topLogoText3}>KR</Text>
+</div>
+                
               </div>
             </Header>
           }
@@ -503,7 +529,7 @@ function App() {
                     p="md"
                     className={classes.item2}
                   >
-                    <BuildingFactory2 size={40} />
+                    <BuildingFactory2 size={38} color="#84888F" />
 
                     <Space h="lg" />
                     <div className={classes.values}>
@@ -521,7 +547,7 @@ function App() {
                         transitionDuration={120}
                         label="The total number of power generation facilities within South Korea"
                       >
-                        <InfoCircle size={20} />
+                        <InfoCircle size={20} color="#84888F" />
                       </Tooltip>
                     </div>
                   </Paper>
@@ -558,7 +584,7 @@ function App() {
                     p="md"
                     className={classes.item2}
                   >
-                    <Plug size={40} />
+                    <Plug size={38} color="#84888F"/>
 
                     <Space h="lg" />
                     <div className={classes.values}>
@@ -581,7 +607,7 @@ function App() {
                         transitionDuration={120}
                         label="The total power generation capacity within South Korea"
                       >
-                        <InfoCircle size={20} />
+                        <InfoCircle size={20} color="#84888F"/>
                       </Tooltip>
                     </div>
                   </Paper>
@@ -609,7 +635,7 @@ function App() {
                     p="md"
                     className={classes.item2}
                   >
-                    <Leaf size={40} />
+                    <Leaf size={38} color="#84888F"/>
                     <Space h="lg" />
                     <div className={classes.values}>
                       <Group spacing={5}>
@@ -631,7 +657,7 @@ function App() {
                         transitionDuration={120}
                         label="The total renewable power generation capacity within South Korea"
                       >
-                        <InfoCircle size={20} />
+                        <InfoCircle size={20} color="#84888F" />
                       </Tooltip>
                     </div>
                   </Paper>
@@ -658,10 +684,15 @@ function App() {
                     p="xs"
                     className={classes.card2}
                   >
+                    
                     <RingProgress
-                      classNames={{root:classes.ringtest}}
-                      size={100}
-                      thickness={6}
+                      className={classes.ring}
+                      size={90}
+                      // breakpoints={[
+                        
+                      //   { maxWidth: 755, size={60}},
+                      // ]}
+                      thickness={5}
                       sections={[{ value: renPercent, color: "#0f9583" }]}
                       label={
                         <Text
@@ -674,9 +705,21 @@ function App() {
                         </Text>
                       }
                     />
-                    <Text color="dimmed" className={classes.ringInfo}>
+                    <Text color="dimmed" >
                       Total renewable capacity
                     </Text>
+                    <div className={classes.tt}>
+                      <Tooltip
+                        wrapLines
+                        width={150}
+                        withArrow
+                        transition="fade"
+                        transitionDuration={120}
+                        label="The total percentage of renewable power generation capacity within South Korea"
+                      >
+                        <InfoCircle size={20} color="#84888F" />
+                      </Tooltip>
+                    </div>
                   </Paper>
                 </div>
                 <div>
@@ -688,11 +731,9 @@ function App() {
                   >
                     <RingProgress
                       className={classes.ring}
-                      size={100}
-                      thickness={6}
-                      breakpoints={[
-                        { maxWidth: 755, size: 80}
-                      ]}
+                      size={90}
+                      thickness={5}
+                      
                       sections={[
                         { value: mostFuelTypePercent, color: "#ff7070" },
                       ]}
@@ -721,6 +762,18 @@ function App() {
                       }
                     />
                     <Text color="dimmed">Highest capacity by Fuel type</Text>
+                    <div className={classes.tt}>
+                      <Tooltip
+                        wrapLines
+                        width={150}
+                        withArrow
+                        transition="fade"
+                        transitionDuration={120}
+                        label="The fuel type with the highest generation capacity within South Korea"
+                      >
+                        <InfoCircle size={20} color="#84888F" />
+                      </Tooltip>
+                    </div>
                   </Paper>
                 </div>
               </SimpleGrid>

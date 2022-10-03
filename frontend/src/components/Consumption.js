@@ -98,6 +98,11 @@ const Consumption= ({data}) => {
             width:"100%",
           },
         },
+        modalTitle:{
+        fontSize: "1.2rem",  
+        fontWeight: 600,
+        },
+
         modalInfo:{
           width: "90%",
           display: "flex",
@@ -523,7 +528,8 @@ const inputs=(<>
             centered
             opened={consModal}
             onClose={() => setConsModal(false)}
-            classNames={{ modal: classes.modalContainer }}
+            classNames={{ modal: classes.modalContainer, title: classes.modalTitle }}
+            title="Average Energy Use"
           >
             {inputs}
             <div className={classes.modalInfo}>
