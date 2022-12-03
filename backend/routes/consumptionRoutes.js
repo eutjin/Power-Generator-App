@@ -23,7 +23,7 @@ router.post("/average", async (req, res) => {
       // console.log("array",array)
     })
   );
-  // await console.log("array", array)
+  await console.log("array", array)
   return res.status(200).json({ success: true, array });
 
   // let url =
