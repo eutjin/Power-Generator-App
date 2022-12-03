@@ -1,8 +1,7 @@
 import React, { useState, useContext, useReducer, useEffect } from "react";
-import { DatePicker } from '@mantine/dates';
-import { Calendar } from 'tabler-icons-react';
+import { DatePicker } from "@mantine/dates";
+import { Calendar } from "tabler-icons-react";
 import axios from "axios";
-
 
 import {
   Card,
@@ -61,41 +60,35 @@ const LineChart = () => {
   const [data2, setData2] = useState([]);
   const [fuelType, setFuelType] = useState("IGCC");
   const [fuelType2, setFuelType2] = useState("");
-  const [date, setDate]= useState(new Date(2022, 5, 30))
-  const [apiDate, setApiDate]= useState(20220630)
+  const [date, setDate] = useState(new Date(2022, 5, 30));
+  const [apiDate, setApiDate] = useState(20220630);
   const theme = useMantineTheme();
 
   const useStyles = createStyles((theme) => ({
-    title: {
-      
-    },
-    input:{
+    title: {},
+    input: {
       [`@media (max-width: 480px)`]: {
-        display:"flex",
+        display: "flex",
         flexDirection: "column",
         // padding: "0.2rem",
       },
     },
-    chartContainer:{
+    chartContainer: {
       position: "relative",
-      
     },
-    chartTitleY:{
+    chartTitleY: {
       position: "absolute",
       top: "1.5rem",
       // left: "0.3rem",
       fontSize: "10px",
     },
-    
-    
   }));
   const { classes } = useStyles();
 
   //test
-  useEffect(()=>{
-fetchData();
-    
-  }, [])
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   // const fetchData = async () => {
   //   let url =
@@ -109,95 +102,93 @@ fetchData();
   // };
   // console.dir(data2)
 
-const fetchData= ()=>{
-  const variable={apiDate: apiDate};
+  const fetchData = () => {
+    const variable = { apiDate: apiDate };
 
-  axios.post(baseUrl+"/api/daily/powerTrading/", variable).then(response=>{
+    axios
+      .post(baseUrl + "/api/daily/powerTrading/", variable)
+      .then((response) => {
+        console.log("response", response);
+        if (response.data.success) {
+          console.log("chart", response.data.data.response.body.items.item);
+          setData2(response.data.data.response.body.items.item);
+        } else {
+          alert("get failed");
+        }
+      });
+  };
 
-  console.log("response",response)
-    if(response.data.success){
-      console.log("chart", response.data.data.response.body.items.item)
-      setData2(response.data.data.response.body.items.item)
-    }else{
-      alert("get failed")
+  // if(date){
+  //     console.dir(date)
+  //   let month=date.getMonth();
+  //   month=month+1; //get month starts from zero
+  //   if (month<10){
+  //         month =`${0}${month}`;
+  //   }
+  //   let day=date.getDate();
+  //   if (day<10){
+  //     day =`${0}${day}`;
+  // }
+
+  //   let year= date.getFullYear();
+  //   let newDate= `${year}${month}${day}`
+  //   console.dir(newDate)
+  //   setApiDate(newDate)
+
+  //   console.dir(apiDate)
+  // }
+
+  // setApiDate(20220404)
+  const moddate = () => {
+    console.log("mantine", date);
+    let month = new Date(date).getMonth(); //remember to use "new Date". huge bug caused when not in use previously
+
+    month = month + 1; //get month starts from zero
+    if (month < 10) {
+      month = `${0}${month}`;
     }
-  })
-}
-
-// if(date){
-//     console.dir(date)
-//   let month=date.getMonth();
-//   month=month+1; //get month starts from zero
-//   if (month<10){
-//         month =`${0}${month}`;
-//   }
-//   let day=date.getDate();
-//   if (day<10){
-//     day =`${0}${day}`;
-// }
-        
-
-//   let year= date.getFullYear();
-//   let newDate= `${year}${month}${day}`
-//   console.dir(newDate)
-//   setApiDate(newDate)
-  
-//   console.dir(apiDate)
-// }
-
-// setApiDate(20220404)
-const moddate=()=>{
-    console.log("mantine",date)
-    let month=new Date(date).getMonth();//remember to use "new Date". huge bug caused when not in use previously
-    
-    month=month+1; //get month starts from zero
-    if (month<10){
-          month =`${0}${month}`;
+    let day = new Date(date).getDate();
+    if (day < 10) {
+      day = `${0}${day}`;
     }
-    let day=new Date(date).getDate();
-    if (day<10){
-      day =`${0}${day}`;
-  }
-          
-  
-    let year= new Date(date).getFullYear();
-    console.log("yearr", year)
-    let newDate= `${year}${month}${day}`
-    console.dir(newDate)
-    setApiDate(newDate)
-    
-    console.dir(apiDate)
-}
+
+    let year = new Date(date).getFullYear();
+    console.log("yearr", year);
+    let newDate = `${year}${month}${day}`;
+    console.dir(newDate);
+    setApiDate(newDate);
+
+    console.dir(apiDate);
+  };
 
   useEffect(() => {
-   moddate();
+    moddate();
     // fetchData();
   }, [date]);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  }, [apiDate])
+  }, [apiDate]);
 
-//   const gooddate=(date)=>{
-//     let month=date.getMonth();
-//   month=month+1; //get month starts from zero
-//   if (month<10){
-//         month =`${0}${month}`;
-//   }
-//   let day=date.getDate();
-//   if (day<10){
-//     day =`${0}${day}`;
-// }
-        
+  //   const gooddate=(date)=>{
+  //     let month=date.getMonth();
+  //   month=month+1; //get month starts from zero
+  //   if (month<10){
+  //         month =`${0}${month}`;
+  //   }
+  //   let day=date.getDate();
+  //   if (day<10){
+  //     day =`${0}${day}`;
+  // }
 
-//   let year= date.getFullYear();
-//   let newDate= `${year}${month}${day}`
-//   console.dir(newDate)
-//   setApiDate(newDate)
-  
-//   console.dir(apiDate)
-// }
-//   }
+  //   let year= date.getFullYear();
+  //   let newDate= `${year}${month}${day}`
+  //   console.dir(newDate)
+  //   setApiDate(newDate)
+
+  //   console.dir(apiDate)
+  // }
+  //   }
   // ok but not what i really wanted to do
   const arrayz = data2.reduce((total, item) => {
     total[item.fuel] = total[item.fuel] || [];
@@ -209,12 +200,12 @@ const moddate=()=>{
 
   //transform data2, and then filter by fuel time to obtain time and value for line plot
   const array1 = data2
-    .map((a) => ({ fuel: a.fuel, time: a.time+":00", value: a.mgo }))
+    .map((a) => ({ fuel: a.fuel, time: a.time + ":00", value: a.mgo }))
     .filter((type) => type.fuel == fuelType);
-    console.log("data2", data2)
-  console.log("array1",array1);
+  console.log("data2", data2);
+  console.log("array1", array1);
 
-  //anoter line for comparison with first data line
+  //another line for comparison with first data line
   const array2 = data2
     .map((a) => ({ fuel: a.fuel, time: a.time, value: a.mgo }))
     .filter((type) => type.fuel == fuelType2);
@@ -223,176 +214,179 @@ const moddate=()=>{
   return (
     <div>
       {/* {data.map((v)=><li>{v.label}</li>)} */}
-      <Container size={1140} px={0} >
-      <Card radius="md" shadow="md">
-                <Card.Section className={classes.title} shadow="md" >
-                  <Title1 order={4} px={15} py={15} >Daily Electricity Trade</Title1>
-                  <Divider size="xs" />
-                </Card.Section>
-                 
-        <SimpleGrid cols={3} mt="md" className={classes.input}>
-          <div>
-            <DatePicker
-              label="Date"
-              placeholder="Select date"
-              value={date}
-              onChange={setDate}
-              icon={<Calendar size={16} />}
-              excludeDate={(date) => date.getFullYear()==2022 && date.getMonth() >5}
-            />
-          </div>
+      <Container size={1140} px={0}>
+        <Card radius="md" shadow="md">
+          <Card.Section className={classes.title} shadow="md">
+            <Title1 order={4} px={15} py={15}>
+              Daily Electricity Trade
+            </Title1>
+            <Divider size="xs" />
+          </Card.Section>
 
-          <div>
-            <Select
-              clearable
-              value={fuelType}
-              onChange={setFuelType}
-              label="Select fuel"
-              placeholder="Fuel Type"
-              data={[
-                { value: "DER", label: "DER" },
-                { value: "IGCC", label: "IGCC" },
-                { value: "LNG", label: "LNG" },
-                { value: "LPG", label: "LPG" },
-                { value: "RPS", label: "RPS" },
-                { value: "경유", label: "경유" },
-                { value: "기타", label: "기타" },
-                { value: "매립가스", label: "매립가스" },
-                { value: "무연탄", label: "무연탄" },
-                { value: "바이오가스", label: "바이오가스" },
-                { value: "바이오매스", label: "바이오매스" },
-                { value: "바이오중유", label: "바이오중유" },
-                { value: "부생가스", label: "부생가스" },
-                { value: "소수력", label: "소수력" },
-                { value: "수력", label: "수력" },
-                { value: "연료전지", label: "연료전지" },
-                { value: "원자력", label: "원자력" },
-                { value: "유연탄", label: "유연탄" },
-                { value: "중유", label: "중유" },
-                { value: "태양광", label: "태양광" },
-                { value: "폐기물", label: "폐기물" },
-                { value: "풍력", label: "풍력" },
-                { value: "해양에너지", label: "해양에너지" },
-              ]}
-            />
-          </div>
-          <div>
-            <Select
-              clearable
-              value={fuelType2}
-              onChange={setFuelType2}
-              label="Select fuel"
-              placeholder="Fuel Type"
-              data={[
-                { value: "DER", label: "DER" },
-                { value: "IGCC", label: "IGCC" },
-                { value: "LNG", label: "LNG" },
-                { value: "LPG", label: "LPG" },
-                { value: "RPS", label: "RPS" },
-                { value: "경유", label: "경유" },
-                { value: "기타", label: "기타" },
-                { value: "매립가스", label: "매립가스" },
-                { value: "무연탄", label: "무연탄" },
-                { value: "바이오가스", label: "바이오가스" },
-                { value: "바이오매스", label: "바이오매스" },
-                { value: "바이오중유", label: "바이오중유" },
-                { value: "부생가스", label: "부생가스" },
-                { value: "소수력", label: "소수력" },
-                { value: "수력", label: "수력" },
-                { value: "연료전지", label: "연료전지" },
-                { value: "원자력", label: "원자력" },
-                { value: "유연탄", label: "유연탄" },
-                { value: "중유", label: "중유" },
-                { value: "태양광", label: "태양광" },
-                { value: "폐기물", label: "폐기물" },
-                { value: "풍력", label: "풍력" },
-                { value: "해양에너지", label: "해양에너지" },
-              ]}
-            />
-          </div>
+          <SimpleGrid cols={3} mt="md" className={classes.input}>
+            <div>
+              <DatePicker
+                label="Date"
+                placeholder="Select date"
+                value={date}
+                onChange={setDate}
+                icon={<Calendar size={16} />}
+                excludeDate={(date) =>
+                  date.getFullYear() == 2022 && date.getMonth() > 5
+                }
+              />
+            </div>
+
+            <div>
+              <Select
+                clearable
+                value={fuelType}
+                onChange={setFuelType}
+                label="Select fuel"
+                placeholder="Fuel Type"
+                data={[
+                  { value: "DER", label: "DER" },
+                  { value: "IGCC", label: "IGCC" },
+                  { value: "LNG", label: "LNG" },
+                  { value: "LPG", label: "LPG" },
+                  { value: "RPS", label: "RPS" },
+                  { value: "경유", label: "경유" },
+                  { value: "기타", label: "기타" },
+                  { value: "매립가스", label: "매립가스" },
+                  { value: "무연탄", label: "무연탄" },
+                  { value: "바이오가스", label: "바이오가스" },
+                  { value: "바이오매스", label: "바이오매스" },
+                  { value: "바이오중유", label: "바이오중유" },
+                  { value: "부생가스", label: "부생가스" },
+                  { value: "소수력", label: "소수력" },
+                  { value: "수력", label: "수력" },
+                  { value: "연료전지", label: "연료전지" },
+                  { value: "원자력", label: "원자력" },
+                  { value: "유연탄", label: "유연탄" },
+                  { value: "중유", label: "중유" },
+                  { value: "태양광", label: "태양광" },
+                  { value: "폐기물", label: "폐기물" },
+                  { value: "풍력", label: "풍력" },
+                  { value: "해양에너지", label: "해양에너지" },
+                ]}
+              />
+            </div>
+            <div>
+              <Select
+                clearable
+                value={fuelType2}
+                onChange={setFuelType2}
+                label="Select fuel"
+                placeholder="Fuel Type"
+                data={[
+                  { value: "DER", label: "DER" },
+                  { value: "IGCC", label: "IGCC" },
+                  { value: "LNG", label: "LNG" },
+                  { value: "LPG", label: "LPG" },
+                  { value: "RPS", label: "RPS" },
+                  { value: "경유", label: "경유" },
+                  { value: "기타", label: "기타" },
+                  { value: "매립가스", label: "매립가스" },
+                  { value: "무연탄", label: "무연탄" },
+                  { value: "바이오가스", label: "바이오가스" },
+                  { value: "바이오매스", label: "바이오매스" },
+                  { value: "바이오중유", label: "바이오중유" },
+                  { value: "부생가스", label: "부생가스" },
+                  { value: "소수력", label: "소수력" },
+                  { value: "수력", label: "수력" },
+                  { value: "연료전지", label: "연료전지" },
+                  { value: "원자력", label: "원자력" },
+                  { value: "유연탄", label: "유연탄" },
+                  { value: "중유", label: "중유" },
+                  { value: "태양광", label: "태양광" },
+                  { value: "폐기물", label: "폐기물" },
+                  { value: "풍력", label: "풍력" },
+                  { value: "해양에너지", label: "해양에너지" },
+                ]}
+              />
+            </div>
           </SimpleGrid>
           <div className={classes.chartContainer}>
-          <div className={classes.chartTitleY}><Text size="sm">MWh</Text></div>
-          <div className={classes.chart}>
-            
-            <Line
-              data={{
-                labels: array1.map((v) => v.time), //
-                datasets: [
-                  {
-                    label: fuelType,
-                    data: array1.map((v) => v.value), //
-                    borderColor: "#54bebe",
-                    backgroundColor: "#54bebe",
-                    // ["#54bebe", "#76c8c8", "#98d1d1", "#badbdb", "#dedad2", "#e4bcad", "#df979e", "#d7658b", "#c80064"]
-                  },
-                  {
-                    label: fuelType2,
-                    data: array2.map((v) => v.value), //
-                    borderColor: "#ff7070",
-                    backgroundColor: "#ff7070",
-                  },
-                ],
-              }}
-              height={400}
-              width={600}
-              options={{
-                plugins: {
-                  title: {
-                    display: true,
-                    // text: "my bar chart",
-                  },
-                  
-                },
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    display: true,
-                    title:{
+            <div className={classes.chartTitleY}>
+              <Text size="sm">kWh</Text>
+            </div>
+            <div className={classes.chart}>
+              <Line
+                data={{
+                  labels: array1.map((v) => v.time), //
+                  datasets: [
+                    {
+                      label: fuelType,
+                      data: array1.map((v) => v.value), //
+                      borderColor: "#54bebe",
+                      backgroundColor: "#54bebe",
+                      // ["#54bebe", "#76c8c8", "#98d1d1", "#badbdb", "#dedad2", "#e4bcad", "#df979e", "#d7658b", "#c80064"]
+                    },
+                    {
+                      label: fuelType2,
+                      data: array2.map((v) => v.value), //
+                      borderColor: "#ff7070",
+                      backgroundColor: "#ff7070",
+                    },
+                  ],
+                }}
+                height={400}
+                width={600}
+                options={{
+                  plugins: {
+                    title: {
                       display: true,
-                      text: 'Hours',
-                      font: {
-                              family: 'Arial',
-                              size: 14,
-                              style: 'normal',
-                              //  weight: 'bold',
-                             },
-                    }
+                      // text: "my bar chart",
+                    },
                   },
-                  y: {
-                    
-                    title:{
-                      display: false,
-                      position: 'bottom',
-                      text: 'MWh',
-                      font: {
-                        family: 'Arial',
-                        size: 18,
-                        style: 'normal',
-                        //  weight: 'bold',
-                       },
-                    }
+                  maintainAspectRatio: false,
+                  scales: {
+                    x: {
+                      display: true,
+                      title: {
+                        display: true,
+                        text: "Hours",
+                        font: {
+                          family: "Arial",
+                          size: 14,
+                          style: "normal",
+                          //  weight: 'bold',
+                        },
+                      },
+                    },
+                    y: {
+                      title: {
+                        display: false,
+                        position: "bottom",
+                        text: "MWh",
+                        font: {
+                          family: "Arial",
+                          size: 18,
+                          style: "normal",
+                          //  weight: 'bold',
+                        },
+                      },
+                    },
+
+                    // xAxes: {
+                    //   title: {
+                    //     display: true,
+                    //     text: "Hours",
+                    //     align: "center",
+                    //     font: {
+                    //       family: 'Arial',
+                    //       size: 18,
+                    //       style: 'normal',
+                    //       // weight: 'bold',
+                    //     },
+                    //   },
+
+                    // },
                   },
-    
-                 
-                  // xAxes: {
-                  //   title: {
-                  //     display: true,
-                  //     text: "Hours",
-                  //     align: "center",
-                  //     font: {
-                  //       family: 'Arial',
-                  //       size: 18,
-                  //       style: 'normal',
-                  //       // weight: 'bold',
-                  //     },
-                  //   },
-                   
-                  // },
-                },
-              }}
-            />
-          </div></div>
+                }}
+              />
+            </div>
+          </div>
         </Card>
       </Container>
     </div>

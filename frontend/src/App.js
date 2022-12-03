@@ -11,7 +11,13 @@ import SvgTest from "./components/SvgTest";
 import DoughnutChart1 from "./components/DoughnutChart1";
 import Consumption from "./components/Consumption";
 import Table1 from "./components/Table1";
-import { BuildingFactory2, Plug, Leaf, InfoCircle, SortDescending2} from "tabler-icons-react";
+import {
+  BuildingFactory2,
+  Plug,
+  Leaf,
+  InfoCircle,
+  SortDescending2,
+} from "tabler-icons-react";
 
 import {
   SegmentedControl,
@@ -47,9 +53,8 @@ function App() {
   console.log("data1", data1);
   const [opened, setOpened] = useState(false);
   const [type, setType] = useState("graph");
-  const [active, setActive]= useState('tab1')
+  const [active, setActive] = useState("tab1");
   const theme = useMantineTheme();
-  
 
   const useStyles = createStyles((theme) => ({
     label: {
@@ -63,11 +68,11 @@ function App() {
       display: "flex",
       flexDirection: "column",
       position: "relative",
-     height: "100%",
-      
+      height: "100%",
+
       // alignItems: "center",
 
-      '& Text':{
+      "& Text": {
         lineHeight: 1,
       },
 
@@ -82,7 +87,7 @@ function App() {
       height: "100%",
       alignItems: "center",
 
-      '& Text':{
+      "& Text": {
         lineHeight: 1,
       },
 
@@ -90,36 +95,33 @@ function App() {
         flexDirection: "row",
       },
     },
-    menu:{
+    menu: {
       zIndex: "100",
     },
-    ring:{
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      
+    ring: {
+      marginLeft: "auto",
+      marginRight: "auto",
 
       [`@media (max-width: 755px)`]: {
         marginLeft: 10,
         marginRight: 10,
-      
       },
     },
-    ringtest:{
+    ringtest: {
       width: 20,
       height: 20,
 
-      
       // [`@media (max-width: 755px)`]: {
       //   width: '70px',
       // height: '70px',
-      
+
       // },
     },
-    ringInfo:{
+    ringInfo: {
       lineHeight: 1,
       alignItem: "center",
     },
-    values:{
+    values: {
       [`@media (max-width: 755px)`]: {
         paddingLeft: 30,
       },
@@ -142,78 +144,69 @@ function App() {
     sections: {
       scrollMarginTop: 80,
     },
-    navlist:{
+    navlist: {
       borderRight: "2px",
       borderColor: "black",
       borderRadius: "10px",
-      
-      
-      '& a':{
+
+      "& a": {
         lineHeight: 1.55,
-        textDecoration: 'none',
+        textDecoration: "none",
         padding: 10,
-        backgroundColor: 'none',
+        backgroundColor: "none",
         marginTop: 10,
-        display: 'block',
-        color: 'black',
+        display: "block",
+        color: "black",
         borderRadius: "10px",
-      }
+      },
     },
-   active:{
-      
-      
-        lineHeight: 1.55,
-        textDecoration: 'none',
-        padding: 10,
-        backgroundColor: theme.colors.gray[2],
-        marginTop: 10,
-        display: 'block',
-        color: 'black',
-        borderRadius: "10px",
-        fontWeight: 500,
-      
-    },
-    inactive:{
-      
-      
+    active: {
       lineHeight: 1.55,
-      textDecoration: 'none',
+      textDecoration: "none",
       padding: 10,
-      backgroundColor: 'white',
-      marginTop: 10,
-      display: 'block',
-      color: 'green',
-      borderRadius: "10px",
-      transition: '150ms ease',
-    '&:hover':{
       backgroundColor: theme.colors.gray[2],
+      marginTop: 10,
+      display: "block",
+      color: "black",
+      borderRadius: "10px",
       fontWeight: 500,
-    }
-  },
-  topLogoContainer:{
-    display: 'flex',
-    alignItems: 'start',
-    
-    
-  },
-  topLogoText1:{
-    fontSize: 22,
-    fontWeight: 800,
-    opacity: 0.7,
-    fontFamily: 'Greycliff CF, sans-serif',
-  },
-  topLogoText2:{
-    fontSize: 22,
-    fontWeight: 800,
-    opacity: 0.4,
-    fontFamily: 'Greycliff CF, sans-serif',
-  },
-  topLogoText3:{
-    fontSize: 11,
-    fontWeight: 500,
-    opacity: 0.5,
-  },
- 
+    },
+    inactive: {
+      lineHeight: 1.55,
+      textDecoration: "none",
+      padding: 10,
+      backgroundColor: "white",
+      marginTop: 10,
+      display: "block",
+      color: "green",
+      borderRadius: "10px",
+      transition: "150ms ease",
+      "&:hover": {
+        backgroundColor: theme.colors.gray[2],
+        fontWeight: 500,
+      },
+    },
+    topLogoContainer: {
+      display: "flex",
+      alignItems: "start",
+    },
+    topLogoText1: {
+      fontSize: 22,
+      fontWeight: 800,
+      opacity: 0.7,
+      fontFamily: "Greycliff CF, sans-serif",
+    },
+    topLogoText2: {
+      fontSize: 22,
+      fontWeight: 800,
+      opacity: 0.4,
+      fontFamily: "Greycliff CF, sans-serif",
+    },
+    topLogoText3: {
+      fontSize: 11,
+      fontWeight: 500,
+      opacity: 0.5,
+    },
   }));
   const { classes } = useStyles();
 
@@ -246,7 +239,7 @@ function App() {
     }
     return total;
   }, {});
-  console.log("fuel",fuel);
+  console.log("fuel", fuel);
 
   const mostFuel = Object.values(fuel).sort((a, b) => {
     return b.value - a.value;
@@ -255,7 +248,7 @@ function App() {
   const mostFuelCap = Object.values(fuel).sort((a, b) => {
     return b.capacity - a.capacity;
   }); //power plant generation capacity grouped by capacity
-  console.log("mostFuelCap",mostFuelCap);
+  console.log("mostFuelCap", mostFuelCap);
 
   //largest generation facility for each fuel type
   let largestByFuel = data1.reduce((total, item, index) => {
@@ -271,7 +264,7 @@ function App() {
 
     return total;
   }, {});
-  console.log("largestByFuel",largestByFuel);
+  console.log("largestByFuel", largestByFuel);
 
   let genSource = data1.reduce((total, item) => {
     const { genSrc, pcap } = item;
@@ -288,7 +281,7 @@ function App() {
     }
     return total;
   }, {});
-  console.log("genSource",genSource);
+  console.log("genSource", genSource);
 
   //total number of power plants in Korea
   let totalPlant = data1.length;
@@ -301,7 +294,7 @@ function App() {
       return total;
     }, 0)
   );
-  console.log("totalCapacity",totalCapacity);
+  console.log("totalCapacity", totalCapacity);
 
   // //total capacity of renewable energy (filter does not work)
   // let totalRenCapacity = mostFuelCap.filter(item => (item.label=="태양광"||"원자력" ||"부생가스" ||"수력" ||"풍력" ||"바이오매스" ||"해양에너지")).reduce((total, item) => {
@@ -343,7 +336,7 @@ function App() {
     }
     return total;
   }, 0);
-  console.log("totalRenCapacity",totalRenCapacity);
+  console.log("totalRenCapacity", totalRenCapacity);
 
   const renPercent = Math.round((totalRenCapacity / totalCapacity) * 100);
   console.dir(renPercent);
@@ -377,7 +370,7 @@ function App() {
 
     return total;
   }, {});
-  console.dir(company);
+  console.log("company",company);
   const mostCompany = Object.values(company).sort((a, b) => {
     return b.value - a.value;
   });
@@ -420,7 +413,8 @@ function App() {
               p="md"
               hiddenBreakpoint="sm"
               hidden={!opened}
-              width={{ sm: 200, lg: 220 }} className={classes.menu}
+              width={{ sm: 200, lg: 220 }}
+              className={classes.menu}
             >
               <div
                 className={classes.navlist}
@@ -431,7 +425,8 @@ function App() {
                   id="tab0"
                   className={
                     active == "tab0" ? classes.active : classes.inactive
-                  } onClick={() => setOpened(false)}
+                  }
+                  onClick={() => setOpened(false)}
                 >
                   Power Generation Overview
                 </a>
@@ -440,7 +435,8 @@ function App() {
                   id="tab1"
                   className={
                     active == "tab1" ? classes.active : classes.inactive
-                  } onClick={() => setOpened(false)}
+                  }
+                  onClick={() => setOpened(false)}
                 >
                   Average Energy Use
                 </a>
@@ -449,7 +445,8 @@ function App() {
                   id="tab2"
                   className={
                     active == "tab2" ? classes.active : classes.inactive
-                  } onClick={() => setOpened(false)}
+                  }
+                  onClick={() => setOpened(false)}
                 >
                   Daily Electricity Trade{" "}
                 </a>
@@ -458,7 +455,8 @@ function App() {
                   id="tab3"
                   className={
                     active == "tab3" ? classes.active : classes.inactive
-                  } onClick={() => setOpened(false)}
+                  }
+                  onClick={() => setOpened(false)}
                 >
                   Power Corporations{" "}
                 </a>
@@ -467,7 +465,8 @@ function App() {
                   id="tab4"
                   className={
                     active == "tab4" ? classes.active : classes.inactive
-                  } onClick={() => setOpened(false)}
+                  }
+                  onClick={() => setOpened(false)}
                 >
                   Fuel Type Composition{" "}
                 </a>
@@ -476,7 +475,8 @@ function App() {
                   id="tab5"
                   className={
                     active == "tab5" ? classes.active : classes.inactive
-                  } onClick={() => setOpened(false)}
+                  }
+                  onClick={() => setOpened(false)}
                 >
                   Renewable Type Composition{" "}
                 </a>
@@ -503,10 +503,11 @@ function App() {
                   />
                 </MediaQuery>
 
-<div  className={classes.topLogoContainer}>
-<Text className={classes.topLogoText1}>Ener</Text><Text className={classes.topLogoText2}>lyzr</Text><Text className={classes.topLogoText3}>KR</Text>
-</div>
-                
+                <div className={classes.topLogoContainer}>
+                  <Text className={classes.topLogoText1}>Ener</Text>
+                  <Text className={classes.topLogoText2}>lyzr</Text>
+                  <Text className={classes.topLogoText3}>KR</Text>
+                </div>
               </div>
             </Header>
           }
@@ -584,7 +585,7 @@ function App() {
                     p="md"
                     className={classes.item2}
                   >
-                    <Plug size={38} color="#84888F"/>
+                    <Plug size={38} color="#84888F" />
 
                     <Space h="lg" />
                     <div className={classes.values}>
@@ -607,7 +608,7 @@ function App() {
                         transitionDuration={120}
                         label="The total power generation capacity within South Korea"
                       >
-                        <InfoCircle size={20} color="#84888F"/>
+                        <InfoCircle size={20} color="#84888F" />
                       </Tooltip>
                     </div>
                   </Paper>
@@ -635,7 +636,7 @@ function App() {
                     p="md"
                     className={classes.item2}
                   >
-                    <Leaf size={38} color="#84888F"/>
+                    <Leaf size={38} color="#84888F" />
                     <Space h="lg" />
                     <div className={classes.values}>
                       <Group spacing={5}>
@@ -684,12 +685,11 @@ function App() {
                     p="xs"
                     className={classes.card2}
                   >
-                    
                     <RingProgress
                       className={classes.ring}
                       size={90}
                       // breakpoints={[
-                        
+
                       //   { maxWidth: 755, size={60}},
                       // ]}
                       thickness={5}
@@ -705,9 +705,7 @@ function App() {
                         </Text>
                       }
                     />
-                    <Text color="dimmed" >
-                      Total renewable capacity
-                    </Text>
+                    <Text color="dimmed">Total renewable capacity</Text>
                     <div className={classes.tt}>
                       <Tooltip
                         wrapLines
@@ -733,11 +731,9 @@ function App() {
                       className={classes.ring}
                       size={90}
                       thickness={5}
-                      
                       sections={[
                         { value: mostFuelTypePercent, color: "#ff7070" },
                       ]}
-                     
                       label={
                         <div>
                           <Text
@@ -795,7 +791,7 @@ function App() {
               <Container size={1140} px={0}>
                 <Card radius="md" shadow="md">
                   <Card.Section shadow="md">
-                   <Group position="apart" noWrap>
+                    <Group position="apart" noWrap>
                       <Title1 order={4} px={15} py={15}>
                         Power corporations
                       </Title1>
@@ -854,7 +850,7 @@ function App() {
 
             <div id="RenComp" className={classes.sections}>
               <Container size={1140} px={0}>
-              <Card radius="md" shadow="md">
+                <Card radius="md" shadow="md">
                   <Card.Section className={classes.title} shadow="md">
                     <Title1 order={4} px={15} py={15}>
                       Renewable type composition
@@ -863,10 +859,11 @@ function App() {
                   </Card.Section>
                   <Space h="md" />
 
-                  
-                  
-                  <DoughnutChart1 data={renewableCapacity} totalCapacity={totalRenCapacity}/>
-                  </Card>
+                  <DoughnutChart1
+                    data={renewableCapacity}
+                    totalCapacity={totalRenCapacity}
+                  />
+                </Card>
               </Container>
             </div>
             <Space h="md" />
@@ -875,7 +872,6 @@ function App() {
             <Consumption data={metroData} />
           </div> */}
 
-            
             {/* <div>
             <Container size={1140} px={0}>
               <Paper shadow="md" radius="md" p="md">

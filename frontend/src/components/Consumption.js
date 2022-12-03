@@ -231,7 +231,6 @@ useEffect(()=>{
 
 useEffect(()=>{
   
-    console.log("metro", allMetro)
     fetchData()
 
 }, [year, month])
@@ -372,18 +371,17 @@ console.log("mydoc",a1[1])
 //     moddate()
 //   }, [date])
         
-  const handelModal=(nm)=>{
-    
-    setMetro(nm)
-    setConsModal(true)
+  const handelModal = (nm) => {
+    setMetro(nm);
+    setConsModal(true);
 
-    const metro= metroPower.find((item)=>(item.metro==nm))
-    console.log("meetrro",metro)
-    setMetroNm(metro)
-   const allCity= consData.filter((item)=>(item.metro==nm))
-   setMetroAllCity(allCity)
-   console.table(metroAllCity)
-  }
+    const metro = metroPower.find((item) => item.metro == nm);
+    console.log("meetrro", metro);
+    setMetroNm(metro);
+    const allCity = consData.filter((item) => item.metro == nm);
+    setMetroAllCity(allCity);
+    console.table(metroAllCity);
+  };
 
   const rows = metroPower.map((element, index) => (
     <tr key={element.metro} onClick={(e) => handelModal(element.metro)}>
@@ -535,19 +533,19 @@ const inputs=(<>
             <div className={classes.modalInfo}>
               <div>
                 <Text size="sm" color="dimmed" className={classes.modalText}>
-                  current metro
+                  Current Metro
                 </Text>
                 <Text size="lg">{metroNm.metro}</Text>
               </div>
               <div>
                 <Text size="sm" color="dimmed" className={classes.modalText}>
-                  number of cities:
+                  Number of Cities:
                 </Text>
                 <Text size="lg">{metroNm.city}</Text>
               </div>
               <div>
                 <Text size="sm" color="dimmed" className={classes.modalText}>
-                  no. of residence:
+                  No. of Residences:
                 </Text>
                 <Text size="lg">
                   {Math.round(metroNm.houseCnt).toLocaleString()}

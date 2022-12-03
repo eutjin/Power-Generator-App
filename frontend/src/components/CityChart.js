@@ -103,7 +103,7 @@ const CityChart = ({ data}) => {
             labels: citySort.map((v) => v.city), //
             datasets: [
               {
-                label: "Average electrcity use",
+                label: "Average Energy Usage",
                 data: citySort.map((v) => v.powerUsage), //
                 barPercentage: citySort.length<5? 0.2: 0.5,
                 backgroundColor: ["#54bebe"],

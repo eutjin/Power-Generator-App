@@ -106,7 +106,7 @@ const BarChart = ({ data }) => {
             labels: mostCompany.map((v) => v.label), //
             datasets: [
               {
-                label: "number of plants",
+                label: sort=="value"?"number of plants":"power production capacity",
                 data: mostCompany.map((v) => v[sort]), //
                 barPercentage: 0.5,
                 backgroundColor: ["#54bebe"],
