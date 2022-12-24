@@ -15,8 +15,11 @@ router.post("/average", async (req, res) => {
       );
 
       const data = await response.json();
-
-      await array.push(...data.data);
+console.log("DATA111", data)
+if(data.data){
+  await array.push(...data.data);
+}
+      
       // array={...array, data}
       // array=[...array, data.data]
       // console.log("getData", data.data)
