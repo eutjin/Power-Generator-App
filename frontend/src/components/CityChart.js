@@ -120,7 +120,7 @@ const CityChart = ({ data}) => {
               },
               tooltip:{
                 callbacks:{
-                  afterTitle:()=>{return "xyz"},
+                  afterTitle:()=>{return "Energy Use"},
                   label: (context)=>{return context.parsed.y+" kWh"},
                 },
               },

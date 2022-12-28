@@ -1,18 +1,28 @@
-import React, { useState, useContext, useReducer, useEffect, useRef } from "react";
-import { DatePicker } from '@mantine/dates';
-import { Calendar, FileX } from 'tabler-icons-react';
+import React, {
+  useState,
+  useContext,
+  useReducer,
+  useEffect,
+  useRef,
+} from "react";
+import { DatePicker } from "@mantine/dates";
+import { Calendar, FileX } from "tabler-icons-react";
 import CityChart from "./CityChart";
 import axios from "axios";
 import baseUrl from "../BaseUrl";
 // import styles from "./Consumption.module.css";
 
-import { useMediaQuery } from '@mantine/hooks';
+import { useMediaQuery } from "@mantine/hooks";
 import {
-  Card, Table, ScrollArea, SegmentedControl, 
+  Card,
+  Table,
+  ScrollArea,
+  SegmentedControl,
   createStyles,
   Divider,
   Title as Title1,
-  Button, Modal,
+  Button,
+  Modal,
   SimpleGrid,
   Paper,
   Text,
@@ -22,7 +32,8 @@ import {
   Header,
   Select,
   useMantineTheme,
- Group, Menu,
+  Group,
+  Menu,
 } from "@mantine/core";
 
 import { Pie, Line } from "react-chartjs-2";
@@ -52,325 +63,348 @@ ChartJS.register(
 
 // defaults.global.tooltips.enabled = false;
 
-const Consumption= ({data}) => {
+const Consumption = ({ data }) => {
+  const [allMetro, setAllMetro] = useState(data);
+  const [year, setYear] = useState("2020");
+  const [month, setMonth] = useState("10");
+  const [date, setDate] = useState("");
+  const [consData, setConsData] = useState([]);
+  const [metroCons, setMetroCons] = useState([]);
+  const [metroPower, setMetroPower] = useState([]);
+  const [metroBill, setMetroBill] = useState([]);
+  const [energyView, setEnergyView]= useState("energy");
 
-    const [allMetro, setAllMetro]= useState(data)
-    const [year, setYear]= useState("2020")
-    const [month, setMonth]= useState("10")
-    const [date, setDate]= useState("")
-    const [consData, setConsData]= useState([])
-  const [metroCons, setMetroCons]= useState([])
-  const [metroPower, setMetroPower]= useState([])
-  const [metroBill, setMetroBill]= useState([])
 
-  const [consModal, setConsModal]= useState(false)
-  const [metroNm, setMetroNm]= useState({})
-  const [metroAllCity, setMetroAllCity]= useState([])
-  const [metro, setMetro]= useState("")
-  const [type, setType]= useState("map")
-  const [metroHseCnt, setMetroHseCnt]= useState("")
-  const [metroCityCnt, setMetroCityCnt]= useState("")
-  const [metroPwrUse, setMetroPwrUse]= useState("")
-  const [width, setWidth]= useState()
+  const [consModal, setConsModal] = useState(false);
+  const [metroNm, setMetroNm] = useState({});
+  const [metroAllCity, setMetroAllCity] = useState([]);
+  const [metro, setMetro] = useState("");
+  const [type, setType] = useState("map");
+  const [metroHseCnt, setMetroHseCnt] = useState("");
+  const [metroCityCnt, setMetroCityCnt] = useState("");
+  const [metroPwrUse, setMetroPwrUse] = useState("");
+  const [width, setWidth] = useState();
 
   const refSvg = useRef(null);
-  const isMobile = useMediaQuery('(max-width: 755px)');
+  const isMobile = useMediaQuery("(max-width: 755px)");
 
-    const useStyles = createStyles((theme) => ({
-        label: {
-          lineHeight: 1,
-        },
-        item: {
-          height: 200,
-        },
-        itemtext: {
-          fontSize: 25,
-          lineHeight: 1,
-        },
-        itemtext2: {
-          fontSize: 20,
-          lineHeight: 1,
-          bottom: 0,
-        },
-        modalContainer:{
-          width:"70%",
-          [`@media (max-width: 480px)`]: {
-            width:"100%",
-          },
-        },
-        modalTitle:{
-        fontSize: "1.2rem",  
-        fontWeight: 600,
-        },
+  const useStyles = createStyles((theme) => ({
+    label: {
+      lineHeight: 1,
+    },
+    item: {
+      height: 200,
+    },
+    itemtext: {
+      fontSize: 25,
+      lineHeight: 1,
+    },
+    itemtext2: {
+      fontSize: 20,
+      lineHeight: 1,
+      bottom: 0,
+    },
+    modalContainer: {
+      width: "70%",
+      [`@media (max-width: 480px)`]: {
+        width: "100%",
+      },
+    },
+    modalTitle: {
+      fontSize: "1.2rem",
+      fontWeight: 600,
+    },
 
-        modalInfo:{
-          width: "90%",
-          display: "flex",
-          flexWrap: "wrap",
-          padding: "10px",
-          margin: "0 auto",
-justifyContent: "center",
-          div:{
-            margin: "5px",
-          },
-        },
-        // button2:{
-        //   position:"absolute",
-        //   "& #부산광역시":{
-        //     left: "15%",
-        //     top:"20%",
-        //   },
-        // },
-        // button3:{
-        //   position:"absolute",
-        //   top: "15%",
-        //   left: "35%",
-        // },
+    modalInfo: {
+      width: "90%",
+      display: "flex",
+      flexWrap: "wrap",
+      padding: "10px",
+      margin: "0 auto",
+      justifyContent: "center",
+      div: {
+        margin: "5px",
+      },
+    },
+    // button2:{
+    //   position:"absolute",
+    //   "& #부산광역시":{
+    //     left: "15%",
+    //     top:"20%",
+    //   },
+    // },
+    // button3:{
+    //   position:"absolute",
+    //   top: "15%",
+    //   left: "35%",
+    // },
 
+    container: {
+      // position: "relative",
 
-        container:{
-          // position: "relative",
-         
-          
+      svg: {
+        //added
+        width: "100%",
 
-          svg:{//added
-            width:"100%",
-            
-            // display: "inlineTable",
+        // display: "inlineTable",
+      },
+    },
+    containerSvg: {
+      position: "relative",
+      width: "50%",
+      margin: "0 auto",
+      [`@media (max-width: 480px)`]: {
+        width: "100%",
+      },
+    },
+    imageEdge: {
+      position: "relative",
+    },
+    button: {
+      '&:first-of-type':{ color: "red",
+        border: "3px solid white"},
+      [`@media (max-width: 755px)`]: {
+        fontSize: "0.8rem",
+      },
+    },
+    
 
-           
-          }
-        },
-        containerSvg:{
-          position: "relative",
-          width: "50%",
-          margin: "0 auto",
-          [`@media (max-width: 480px)`]: {
-            width:"100%",
-          },
-        },
-        imageEdge:{
-          position: "relative",
-        },
-        button:{
-          
-          [`@media (max-width: 755px)`]: {
-            fontSize: "0.8rem",
-          },
-        },
-        
-          image:{
-          display: "block",
-          stroke: "red",
-          verticalAlign:"top",
-          position: "relative",//added
-  
-          '&:hover':{
-              fill:"blue",
-          }
-         },
-         image2:{
-          fill:"blue",
-          strokeLinecap:"round",
-  
-          '&:hover':{
-              fill:"green",
-              transition: "200ms Ease",
-          }
-         },
-         single:{
-          stroke: "#cfe9e6",
-          fill: "#57b4a8",
-  
-          '&:hover':{
-              fill: "#0f9583",
-              transition: "300ms Ease",
-          }
-         },
-         header:{
-          position: 'sticky',
-          backgroundColor: theme.white,
-          top: 10,
-          boxShadow: theme.shadows.sm,
-        },
-        modalText:{
-          lineHeight: 1,
-        },
-        // metrovalue:{
-        //   color: 'green',
+    image: {
+      display: "block",
+      stroke: "red",
+      verticalAlign: "top",
+      position: "relative", //added
 
-        //   "& #강원도":{
-        //     color: "blue",
-        //   }
-        // },
-        
-      }));
-      const { classes } = useStyles();
-  
-useEffect(()=>{
-    console.log("metro", allMetro)
+      "&:hover": {
+        fill: "blue",
+      },
+    },
+    image2: {
+      fill: "blue",
+      strokeLinecap: "round",
+
+      "&:hover": {
+        fill: "green",
+        transition: "200ms Ease",
+      },
+    },
+    single: {
+      stroke: "#cfe9e6",
+      fill: "#57b4a8",
+
+      "&:hover": {
+        fill: "#0f9583",
+        transition: "300ms Ease",
+      },
+    },
+    header: {
+      position: "sticky",
+      backgroundColor: theme.colors.gray[0],
+      top: 10,
+      boxShadow: theme.shadows.sm,
+    },
+    modalText: {
+      lineHeight: 1,
+    },
+    consumptionInputs:{
+      display: "flex",
+      flexWrap: "wrap",
+      gap: "20px",
+      justifyContent:"center",
+      marginTop: "10px",
+      marginBottom:"20px",
+      [`@media (max-width: 480px)`]: {
+        display: "flex",
+        flexDirection: "column",
+       
+        // padding: "0.2rem",
+      },
+    },
+    segmentGroup:{
+      display: "flex",
+      gap: "20px",
+    }
+    // metrovalue:{
+    //   color: 'green',
+
+    //   "& #강원도":{
+    //     color: "blue",
+    //   }
+    // },
+  }));
+  const { classes } = useStyles();
+
+  useEffect(() => {
+    console.log("metro", allMetro);
     // setYear("2020")
     // setMonth("04")
-    fetchData()
-}, [])
+    fetchData();
+  }, []);
 
-// useEffect(()=>{
-// console.log("WIDTH", refSvg.current.getBoundingClientRect().width)
-// setWidth(refSvg.current.getBoundingClientRect().width)
+  // useEffect(()=>{
+  // console.log("WIDTH", refSvg.current.getBoundingClientRect().width)
+  // setWidth(refSvg.current.getBoundingClientRect().width)
 
-// window.addEventListener("resize", resizer);
+  // window.addEventListener("resize", resizer);
 
-//     return () => window.removeEventListener("resize", resizer);
+  //     return () => window.removeEventListener("resize", resizer);
 
-// }, [refSvg.current])
+  // }, [refSvg.current])
 
-// const resizer=()=>{
-//   console.log("WIDTH2", refSvg.current.getBoundingClientRect().width)
-//   setWidth(refSvg.current.getBoundingClientRect().width)
-// }
+  // const resizer=()=>{
+  //   console.log("WIDTH2", refSvg.current.getBoundingClientRect().width)
+  //   setWidth(refSvg.current.getBoundingClientRect().width)
+  // }
 
-useEffect(()=>{
-  
-    fetchData()
+  useEffect(() => {
+    fetchData();
+  }, [year, month]);
 
-}, [year, month])
-
-useEffect(()=>{
-  if(consModal){
-    console.log("step1")
-    const metro1= metroPower.find((item)=>(item.metro==metro))
-    console.log(metro1)
-  //7
-  setMetroNm(metro1)
-
-}
-}, [metroPower])
-
-useEffect(()=>{
-  if(consModal){
-    console.log("step2")
-    const allCity= consData.filter((item)=>(item.metro==metro))
-    setMetroAllCity(allCity)
-  }
-}, [metroNm])
-
-const fetchData=()=>{
-    const variable={
-        year: year,
-        month: month, 
-        metro: data,
+  useEffect(() => {
+    if (consModal) {
+      console.log("step1");
+      const metro1 = metroPower.find((item) => item.metro == metro);
+      console.log(metro1);
+      //7
+      setMetroNm(metro1);
     }
-    console.log("var",variable)
-    console.log("base", baseUrl)
+  }, [metroPower]);
 
-    axios.post(baseUrl+"/api/consumption/average/", variable).then(response=>{
-      if(response.data.success){
-        console.log("average", response.data.array)//.array
-        setConsData(response.data.array)
-      }else{
-        alert("get failed")
+  useEffect(() => {
+    if (consModal) {
+      console.log("step2");
+      const allCity = consData.filter((item) => item.metro == metro);
+      setMetroAllCity(allCity);
+    }
+  }, [metroNm]);
+
+  const fetchData = () => {
+    const variable = {
+      year: year,
+      month: month,
+      metro: data,
+    };
+    console.log("var", variable);
+    console.log("base", baseUrl);
+
+    axios
+      .post(baseUrl + "/api/consumption/average/", variable)
+      .then((response) => {
+        if (response.data.success) {
+          console.log("average", response.data.array); //.array
+          setConsData(response.data.array);
+        } else {
+          alert("get failed");
+        }
+      });
+  };
+
+  useEffect(() => {
+    let cons = consData.reduce((total, item) => {
+      const { metro, houseCnt, powerUsage, bill } = item;
+
+      if (!total[metro]) {
+        total[metro] = {
+          houseCnt: houseCnt,
+          city: 1,
+          ttlPower: houseCnt * powerUsage,
+          ttlBill: houseCnt * bill,
+          metro: metro,
+        };
+      } else {
+        total[metro] = {
+          ...total[metro],
+          ttlPower: total[metro].ttlPower + houseCnt * powerUsage,
+          ttlBill: total[metro].ttlBill + houseCnt * bill,
+          houseCnt: total[metro].houseCnt + houseCnt,
+          city: total[metro].city + 1,
+        };
       }
-    })
-}
 
-useEffect(()=>{
-  let cons= consData.reduce((total, item)=>{
-    const {metro, houseCnt, powerUsage, bill}= item;
+      return total;
+    }, {});
+    console.log("cons", cons);
+    console.log("consData", consData);
+    setMetroCons(Object.values(cons));
 
-    if (!total[metro]){
-        total[metro]= {houseCnt: houseCnt, city: 1, ttlPower: houseCnt*powerUsage, ttlBill: houseCnt*bill,  metro: metro}
+    console.log("joke", metroCons);
+  }, [consData]);
+
+  useEffect(() => {
+    const modMetroCons = metroCons.map((item) => ({
+      ...item,
+      powerUsage: item.ttlPower / item.houseCnt,
+      powerBill: item.ttlBill / item.houseCnt,
+    }));
+    console.log("joke2", modMetroCons);
+    const desModMetroCons = Object.values(modMetroCons).sort((a, b) => {
+      return b.powerUsage - a.powerUsage;
+    });
+    setMetroPower(desModMetroCons); //7
+
+    const desModMetroBill = Object.values(modMetroCons).sort((a, b) => {
+      return b.powerBill - a.powerBill;
+    });
+    setMetroBill(desModMetroBill);
+  }, [metroCons]);
+
+  useEffect(() => {
+    console.log("metroPowwer", metroPower);
+    console.dir(
+      "joke3",
+      metroPower.find((item) => item.metro == "강원도")
+    );
+    // console.log("joke3", (metroPower.filter(item=>item.metro=="강원도")[0]).powerUsage)
+  }, [metroPower]);
+
+  const metroPro = (metroNm) => {
+    console.log("convertion", metroNm);
+    if (metroNm == "경상남도") {
+      return "경남";
+    } else if (metroNm == "충청남도") {
+      return "충남";
+    } else if (metroNm == "충청북도") {
+      return "충북";
+    } else if (metroNm == "경상북도") {
+      return "경북";
+    } else if (metroNm == "전라남도") {
+      return "전남";
+    } else if (metroNm == "전라북도") {
+      return "전북";
+    } else {
+      return metroNm.slice(0, 2);
     }
-    else{
-        total[metro]= {...total[metro],ttlPower:total[metro].ttlPower+(houseCnt*powerUsage), ttlBill:total[metro].ttlBill + (houseCnt*bill), houseCnt:total[metro].houseCnt+houseCnt, city: total[metro].city+1}
-    }
+  };
 
-return total;
-}, {})
-console.log("cons", cons)
-console.log("consData", consData)
-setMetroCons(Object.values(cons))
+  useEffect(() => {
+    console.table(metroPower);
 
-console.log("joke",metroCons)
+    const a1 = document.querySelectorAll("button#강원도");
+    console.log("mydoc", a1[1]);
+  }, [metroPower]);
 
+  // const moddate=()=>{
+  //     console.dir(date)
+  //     let month=new Date(date).getMonth();//remember to use "new Date". huge bug caused when not in use previously
 
-}, [consData])
+  //     month=month+1; //get month starts from zero
+  //     if (month<10){
+  //           month =`${0}${month}`;
+  //     }
+  //     let year= new Date(date).getFullYear();
+  //     year=`${year}`
 
-useEffect(()=>{
-  const modMetroCons= metroCons.map((item)=>({...item, powerUsage: item.ttlPower/item.houseCnt, powerBill: item.ttlBill/item.houseCnt}))
-  console.log("joke2", modMetroCons)
-  const desModMetroCons= Object.values(modMetroCons).sort((a,b)=>{
-    return b.powerUsage - a.powerUsage;
-  })
-  setMetroPower(desModMetroCons)//7
+  //     console.log("year", year)
+  //     console.log("month", month)
+  //     setMonth(month)
+  //     setYear(year)
 
-  const desModMetroBill= Object.values(modMetroCons).sort((a,b)=>{
-    return b.powerBill - a.powerBill;
-  })
-  setMetroBill(desModMetroBill)
-}, [metroCons])
+  //   }
 
-useEffect(()=>{
-  console.log("metroPowwer",metroPower)
-  console.dir("joke3", (metroPower.find(item=>item.metro=="강원도")))
-  // console.log("joke3", (metroPower.filter(item=>item.metro=="강원도")[0]).powerUsage)
-}, [metroPower])
+  //   useEffect(()=>{
+  //     moddate()
+  //   }, [date])
 
-const metroPro=(metroNm)=>{
-  console.log("convertion",metroNm)
-  if(metroNm=="경상남도"){
-    return "경남"
-  }
-  else if(metroNm=="충청남도"){
-    return "충남"
-  }
-  else if(metroNm=="충청북도"){
-    return "충북"
-  }
-  else if(metroNm=="경상북도"){
-    return "경북"
-  }
-  else if(metroNm=="전라남도"){
-    return "전남"
-  }
-  else if(metroNm=="전라북도"){
-    return "전북"
-  }
-  else {
-    return metroNm.slice(0,2)
-  }
-}
-
-useEffect(()=>{
-console.table(metroPower)
-
-const a1= document.querySelectorAll("button#강원도")
-console.log("mydoc",a1[1])
-
-}, [metroPower])
-
-
-// const moddate=()=>{
-//     console.dir(date)
-//     let month=new Date(date).getMonth();//remember to use "new Date". huge bug caused when not in use previously
-    
-//     month=month+1; //get month starts from zero
-//     if (month<10){
-//           month =`${0}${month}`;
-//     }
-//     let year= new Date(date).getFullYear();
-//     year=`${year}`
-
-//     console.log("year", year)
-//     console.log("month", month)
-//     setMonth(month)
-//     setYear(year)
-    
-//   }
-
-//   useEffect(()=>{
-//     moddate()
-//   }, [date])
-        
   const handelModal = (nm) => {
     setMetro(nm);
     setConsModal(true);
@@ -385,96 +419,127 @@ console.log("mydoc",a1[1])
 
   const rows = metroPower.map((element, index) => (
     <tr key={element.metro} onClick={(e) => handelModal(element.metro)}>
-      <td>{index+1}</td>
+      <td>{index + 1}</td>
       <td>{element.metro}</td>
-      
+
       <td>{Math.round(element.powerUsage)}</td>
-    
     </tr>
   ));
+
+  const rows2 = metroBill.map((element, index) => (
+    <tr key={element.metro} onClick={(e) => handelModal(element.metro)}>
+      <td>{index + 1}</td>
+      <td>{element.metro}</td>
+
+      <td>{(Math.round(element.powerBill)).toLocaleString()}</td>
+    </tr>
+  ));
+
+  //(Math.round(item.powerBill)).toLocaleString()
 
   // useEffect(()=>{
   //   if(consModal){
   //     const metro= metroPower.find((item)=>(item.metro==metroNm.metro))
-    
+
   //   setMetroNm(metro)
   //     const allCity= consData.filter((item)=>(item.metro==metroNm.metro))
   //  setMetroAllCity(allCity)
   //   }
   // }, [year, month])
 
-//   const updateYear=(data)=>{
-// console.log("updateyear", data)
-// setYear(data)
-//   }
+  //   const updateYear=(data)=>{
+  // console.log("updateyear", data)
+  // setYear(data)
+  //   }
 
-//   const updateMonth=(data)=>{
-//     console.log("updatemonth", data)
-//     setMonth(data)
-//   }
-const inputs=(<>
-  <Group>
-  <Select
-    label="Year"
-    placeholder="Select Year"
-    value={year}
-    onChange={setYear}
-    data={[
-      { value: "2022", label: "2022" },
-      { value: "2021", label: "2021" },
-      { value: "2020", label: "2020" },
-      { value: "2019", label: "2019" },
-    ]}
-  />
+  //   const updateMonth=(data)=>{
+  //     console.log("updatemonth", data)
+  //     setMonth(data)
+  //   }
+  const inputs = (
+    <>
+      <SimpleGrid cols={3} className={classes.consumptionInputs}>
+        <div>
+        <Select
+          label="Year"
+          placeholder="Select Year"
+          value={year}
+          onChange={setYear}
+          data={[
+            { value: "2022", label: "2022" },
+            { value: "2021", label: "2021" },
+            { value: "2020", label: "2020" },
+            { value: "2019", label: "2019" },
+          ]}
+        /></div>
 
-  <Select
-    label="Month"
-    placeholder="Select Month"
-    value={month}
-    onChange={setMonth}
-    data={
-      year != "2022"
-        ? [
-            { value: "01", label: "January" },
-            { value: "02", label: "February" },
-            { value: "03", label: "March" },
-            { value: "04", label: "April" },
-            { value: "05", label: "May" },
-            { value: "06", label: "June" },
-            { value: "07", label: "July" },
-            { value: "08", label: "August" },
-            { value: "09", label: "September" },
-            { value: "10", label: "October" },
-            { value: "11", label: "November" },
-            { value: "12", label: "December" },
-          ]
-        : [
-            { value: "01", label: "January" },
-            { value: "02", label: "February" },
-            { value: "03", label: "March" },
-            { value: "04", label: "April" },
-            { value: "05", label: "May" },
-            { value: "06", label: "June" },
-            { value: "07", label: "July" },
-            { value: "08", label: "August" },
-            { value: "09", label: "September" },
-            { value: "10", label: "October" },
-          ]
-    }
-  />
-  {!consModal? (<SegmentedControl className={classes.segment}
-                      mx={15} mt={28}
-                      color="teal"
-                      value={type}
-                      onChange={setType}
-                      data={[
-                        { label: "Map", value: "map" },
-                        { label: "Table", value: "table" },
-                      ]}
-                    />):null}
-  
-</Group></>
-)
+        <div><Select
+          label="Month"
+          placeholder="Select Month"
+          value={month}
+          onChange={setMonth}
+          data={
+            year != "2022"
+              ? [
+                  { value: "01", label: "January" },
+                  { value: "02", label: "February" },
+                  { value: "03", label: "March" },
+                  { value: "04", label: "April" },
+                  { value: "05", label: "May" },
+                  { value: "06", label: "June" },
+                  { value: "07", label: "July" },
+                  { value: "08", label: "August" },
+                  { value: "09", label: "September" },
+                  { value: "10", label: "October" },
+                  { value: "11", label: "November" },
+                  { value: "12", label: "December" },
+                ]
+              : [
+                  { value: "01", label: "January" },
+                  { value: "02", label: "February" },
+                  { value: "03", label: "March" },
+                  { value: "04", label: "April" },
+                  { value: "05", label: "May" },
+                  { value: "06", label: "June" },
+                  { value: "07", label: "July" },
+                  { value: "08", label: "August" },
+                  { value: "09", label: "September" },
+                  { value: "10", label: "October" },
+                ]
+          }
+        /></div>
+        {!consModal ? (
+          <div className={classes.segmentGroup}><SegmentedControl
+            className={classes.segment}
+            
+            mt={28}
+            color="teal"
+            value={type}
+            onChange={setType}
+            data={[
+              { label: "Map View", value: "map" },
+              { label: "Table View", value: "table" },
+            ]}
+          /><SegmentedControl
+          className={classes.segment}
+          
+          mt={28}
+          color="red"
+          value={energyView}
+          onChange={setEnergyView}
+          data={[
+            { label: "Energy Use", value: "energy" },
+            { label: "Energy Bill", value: "bill" },
+          ]}
+        /></div>
+      
+        ) : null}
+
+
+          
+      </SimpleGrid>
+    </>
+  );
 
   return (
     <>
@@ -534,7 +599,10 @@ const inputs=(<>
             centered
             opened={consModal}
             onClose={() => setConsModal(false)}
-            classNames={{ modal: classes.modalContainer, title: classes.modalTitle }}
+            classNames={{
+              modal: classes.modalContainer,
+              title: classes.modalTitle,
+            }}
             title="Average Energy Use"
           >
             {inputs}
@@ -565,12 +633,11 @@ const inputs=(<>
                 </Text>
                 <Text size="lg">{Math.round(metroNm.powerUsage)} kWh</Text>
               </div>
-              </div>
+            </div>
 
             {/* <Text>no. of residence: {metroNm.houseCnt}</Text>
             <Text>Daily Power Usage: {Math.round(metroNm.powerUsage)}kWh</Text> */}
             <CityChart data={metroAllCity} />
-            
           </Modal>
           {/* convertion 강원도
 Consumption.js:192 convertion 충청북도
@@ -776,8 +843,7 @@ Consumption.js:192 convertion 경기도 */}
                     />
                   </g>
                 </svg>
-
-                {metroPower.map((item, index) => (
+{energyView=="energy" ? (metroPower.map((item, index) => (
                   <button
                     id={item.metro}
                     style={{
@@ -787,23 +853,48 @@ Consumption.js:192 convertion 경기도 */}
                   >
                     {metroPro(item.metro)}:{Math.round(item.powerUsage)}kWh
                   </button>
-                ))}
+                ))):(metroBill.map((item, index) => (
+                  <button
+                    id={item.metro}
+                    style={{
+                      backgroundColor: `hsla(199, 49%, ${38 + index * 0.7}%, 1)`,
+                    }}
+                    className={classes.button}
+                  >
+                    {metroPro(item.metro)}:{(Math.round(item.powerBill)).toLocaleString()}₩
+                  </button>
+                )))}
+                
               </div>
             </div>
-          ) : (
-            <div>
+          ) : (energyView =="energy"? (
+<div>
               <Table highlightOnHover>
                 <thead className={classes.header}>
                   <tr>
                     <th>Number</th>
                     <th>Metro</th>
-                    <th>Energy use</th>
+                    <th>Energy Use (kWh)</th>
                   </tr>
                 </thead>
 
                 <tbody>{rows}</tbody>
               </Table>
             </div>
+          ):(<div>
+            <Table highlightOnHover>
+              <thead className={classes.header}>
+                <tr>
+                  <th>Number</th>
+                  <th>Metro</th>
+                  <th>Energy Bill (₩)</th>
+                </tr>
+              </thead>
+
+              <tbody>{rows2}</tbody>
+            </Table>
+          </div>)
+            
           )}
         </Card>
       </Container>
