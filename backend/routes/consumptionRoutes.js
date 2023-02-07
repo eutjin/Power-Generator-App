@@ -3,7 +3,7 @@ const router = express.Router();
 const fetch = require("node-fetch");
 
 router.post("/average", async (req, res) => {
-  console.log("check2", req.body);
+  console.log("check22", req.body);
   let allMetro = req.body.metro;
   // console.log("allMetro", allMetro)
   const api_key = process.env.API_KEY_2;

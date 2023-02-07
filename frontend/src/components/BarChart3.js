@@ -40,36 +40,34 @@ const BarChart = ({ data }) => {
   const theme = useMantineTheme();
 
   const useStyles = createStyles((theme) => ({
-    button:{
-      display: 'flex',
+    button: {
+      display: "flex",
       // alignItems: 'center',
-    justifyContent: 'center',
+      justifyContent: "center",
 
-    [`@media (max-width: 980px)`]: {
-      flexDirection:"column",
-      
+      [`@media (max-width: 980px)`]: {
+        flexDirection: "column",
+      },
     },
-    },
-    inputSize:{
-      display: 'flex',
+    inputSize: {
+      display: "flex",
       margin: "5px",
-      alignItems: 'center',
-      width: '100%',
+      alignItems: "center",
+      width: "100%",
       flexWrap: "wrap",
     },
-    inputLeft:{
+    inputLeft: {
       [`@media (max-width: 480px)`]: {
         fontSize: "0.8rem",
-        margin: '5px',
-        
+        margin: "5px",
       },
     },
-    inputRight:{
+    inputRight: {
       [`@media (max-width: 480px)`]: {
         fontSize: "0.8rem",
-        margin: '5px',
+        margin: "5px",
       },
-    }
+    },
   }));
   const { classes } = useStyles();
 
@@ -82,7 +80,7 @@ const BarChart = ({ data }) => {
       }
     })
     .slice(0, filter);
-
+  console.log("DATA", mostCompany);
   // mostCompany=mostCompany.slice(0,filter)
 
   return (
@@ -106,7 +104,10 @@ const BarChart = ({ data }) => {
             labels: mostCompany.map((v) => v.label), //
             datasets: [
               {
-                label: sort=="value"?"number of plants":"power production capacity",
+                label:
+                  sort == "value"
+                    ? "number of plants"
+                    : "power production capacity",
                 data: mostCompany.map((v) => v[sort]), //
                 barPercentage: 0.5,
                 backgroundColor: ["#54bebe"],
@@ -193,33 +194,37 @@ const BarChart = ({ data }) => {
       </div>
       <div className={classes.button}>
         <div className={classes.inputSize}>
-        <Title1 order={5} mx="xs" className={classes.inputLeft}>
-          Data size:
-        </Title1>
-        <SegmentedControl className={classes.inputRight}
-          value={filter}
-          onChange={setFilter}
-          data={[
-            { label: "N=5", value: 5 },
-            { label: "N=10", value: 10 },
-            { label: "N=15", value: 15 },
-            { label: "N=20", value: 20 },
-            { label: "N=25", value: 25 },
-          ]}
-        /></div>
+          <Title1 order={5} mx="xs" className={classes.inputLeft}>
+            Data size:
+          </Title1>
+          <SegmentedControl
+            className={classes.inputRight}
+            value={filter}
+            onChange={setFilter}
+            data={[
+              { label: "N=5", value: 5 },
+              { label: "N=10", value: 10 },
+              { label: "N=15", value: 15 },
+              { label: "N=20", value: 20 },
+              { label: "N=25", value: 25 },
+            ]}
+          />
+        </div>
         {/* <Space w="xl" /> */}
         <div className={classes.inputSize}>
-        <Title1 order={5} mx="xs" className={classes.inputLeft}>
-          Data Type:
-        </Title1>
-        <SegmentedControl className={classes.inputRight}
-          value={sort}
-          onChange={setSort}
-          data={[
-            { label: "No. of facility", value: "value" },
-            { label: "Production capacity", value: "capacity" },
-          ]} 
-        /></div>
+          <Title1 order={5} mx="xs" className={classes.inputLeft}>
+            Data Type:
+          </Title1>
+          <SegmentedControl
+            className={classes.inputRight}
+            value={sort}
+            onChange={setSort}
+            data={[
+              { label: "No. of facility", value: "value" },
+              { label: "Production capacity", value: "capacity" },
+            ]}
+          />
+        </div>
       </div>
     </div>
   );

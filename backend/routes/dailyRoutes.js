@@ -3,7 +3,7 @@ const router= express.Router()
 const fetch = require("node-fetch");
 
 router.post('/powerTrading', async (req, res)=>{
-    // console.log("check",req.body.apiDate)
+    console.log("check",req.body.apiDate)
 const {apiDate}=req.body;
 const api_key=process.env.API_KEY_1;
     let url =
@@ -11,9 +11,9 @@ const api_key=process.env.API_KEY_1;
 console.log("url", url)
 
     const response = await fetch(url);
-    // console.log("res", response)
+    console.log("res", response)
     const data = await response.json();
-    // console.log("data1", data);
+    console.log("data1", data);
     return res.status(200).json({success: true, data})
 })
 
