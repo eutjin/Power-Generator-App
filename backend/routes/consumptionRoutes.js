@@ -15,7 +15,7 @@ router.post("/average", async (req, res) => {
       );
 
       const data = await response.json();
-console.log("DATA111", data)
+console.log("CONSUMPTION DATA", data)
 if(data.data){
   await array.push(...data.data);
 }

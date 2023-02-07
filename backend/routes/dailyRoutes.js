@@ -8,7 +8,7 @@ const {apiDate}=req.body;
 const api_key=process.env.API_KEY_1;
     let url =
     `http://apis.data.go.kr/B552115/PowerTradingResultInfo1/getPowerTradingResultInfo1?serviceKey=${api_key}&pageNo=1&numOfRows=600&dataType=JSON&tradeDay=${apiDate}`;//some issues were solved by removig s from https
-console.log("url", url)
+console.log("url1", url)
 
     const response = await fetch(url);
     console.log("res", response)
